@@ -1,4 +1,3 @@
-
 interface IAvailability {
   monday?: string[]
   tuesday?: string[]
@@ -21,7 +20,7 @@ export interface TechnicianProfile {
   updatedAt: string
 }
 
-export interface IUser{
+export interface IUser {
   id: string
   name: string
   email: string

@@ -75,11 +75,11 @@ export interface ProfileResponse {
   data: IUser
 }
 
-export function Navbar() {
+export function Navbar({user}:{user:ProfileResponse}) {
 
-  const user = {
-    
-  }
+ 
+  console.log("user is ", user);
+
   const router = useRouter()
 
   // const handleLogout = async () => {
@@ -147,10 +147,10 @@ export function Navbar() {
               <DropdownMenuGroup>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuLabel>
-                  {user.data?.profile.name || "name"}
+                  {user.data.name || "name"}
                 </DropdownMenuLabel>
                 <DropdownMenuLabel>
-                  {user.data?.profile.email || "demo@gmail.com"}
+                  {user.data.email || "demo@gmail.com"}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {userOptions.map((option) => (
