@@ -49,3 +49,30 @@ export const loginAction = async (prevState:LoginState, formData: FormData) => {
   // console.log(result, "result")
   return result;
 }
+
+
+export type RegisterState = {
+  success: boolean;
+  statusCode: number;
+  message: string;
+}
+
+export const registerAction = async (prevState:RegisterState, formData:FormData):Promise<RegisterState> => {
+  
+  const name = formData.get("name")
+  const email = formData.get("email")
+  const password = formData.get("password")
+  const phone = formData.get("phone")
+  const role = formData.get("role")
+
+  const payload = { name, email, password, phone, role }
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+  const result: RegisterState = await res.json()
+  console.log("result", result);
+  return result
+}

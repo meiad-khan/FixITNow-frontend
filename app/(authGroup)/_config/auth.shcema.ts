@@ -11,7 +11,7 @@ export const loginSchema = z.object({
 export const registerSchema = loginSchema.extend({
   name: z.string().trim().min(1, "Name is required"),
   phone: z.string().trim().optional(),
-  role: z.enum(["technician", "customer"]).default("customer"),
+  role: z.enum(["TECHNICIAN", "CUSTOMER"]),
 })
 
 export type LoginFormData = z.infer<typeof loginSchema>;
