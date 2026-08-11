@@ -11,6 +11,11 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 })
 
+export const metadata = {
+  title: "FixIt Now",
+  desciription:"Book home service from trusted platform"
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
