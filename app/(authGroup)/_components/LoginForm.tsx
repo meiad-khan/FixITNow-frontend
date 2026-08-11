@@ -10,9 +10,11 @@ import { LoginFormData, loginSchema } from '../_config/auth.shcema'
 import { Spinner } from '@/components/ui/spinner'
 import { loginAction, LoginState } from '../_actions/authActions'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const LoginForm = () => {
 
+  const router = useRouter();
   const initialState: LoginState = {
     success: false,
     statusCode: 0,
@@ -48,10 +50,17 @@ const LoginForm = () => {
     if (!state.message) return
     if (state.success) {
       toast.success(state.message);
+      if (state.role === "CUSTOMER") {
+        router.push("/dashboard")
+      } else if (state.role === "TECHNICIAN") {
+        router.push("/technician-dashboard")
+      } else if (state.role === "ADMIN") {
+        router.push("/admin-dashboard")
+      }
     } else {
       toast.error(state.message);
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
