@@ -31,3 +31,10 @@ export interface IUser {
   updatedAt: string
   technicianProfile: TechnicianProfile
 }
+
+export interface ProfileResponse {
+  success: boolean
+  statusCode: number
+  message: string
+  data: IUser
+}
