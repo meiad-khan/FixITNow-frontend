@@ -84,7 +84,7 @@ export function Navbar({ user }: { user: ProfileResponse }) {
           <NavigationMenuList className="gap-1">
             {navLinks.map((link) => (
               <NavigationMenuItem key={link.label}>
-                <NavigationMenuLink href={link.href}>
+                <NavigationMenuLink href={link.href} className="text-md">
                   {link.label}
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -136,9 +136,14 @@ export function Navbar({ user }: { user: ProfileResponse }) {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Link href={"/login"}>
-            <Button className="cursor-pointer">Login</Button>
-          </Link>
+          <div className="space-x-3">
+            <Link href={"/login"}>
+              <Button className="cursor-pointer">Login</Button>
+            </Link>
+            <Link href={"/register"}>
+              <Button className="cursor-pointer" variant="outline">Sign Up</Button>
+            </Link>
+          </div>
         )}
       </nav>
     </header>
