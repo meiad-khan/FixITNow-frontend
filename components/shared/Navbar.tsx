@@ -38,9 +38,9 @@ type NavLink = {
 
 const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
+  { label: "Services", href: "/service" },
+  {label:"Technicians", href:"/technician"},
   { label: "About", href: "/about" },
-  { label: "Service", href: "/service" },
-  { label: "Premium", href: "/premium" },
 ]
 
 export function Navbar({ user }: { user: ProfileResponse }) {
