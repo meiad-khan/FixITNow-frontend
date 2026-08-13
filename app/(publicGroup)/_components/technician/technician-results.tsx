@@ -1,4 +1,4 @@
-import { getAllTechnician } from "../../_actions/technicianActions"
+import { getAllTechnician } from "../../_actions/technicianActions/technicianActions"
 import { Technician, TechnicianCard } from "./technician-card"
 
 export async function TechnicianResults() {

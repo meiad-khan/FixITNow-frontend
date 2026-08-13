@@ -1,4 +1,4 @@
-interface IAvailability {
+export interface IAvailability {
   monday?: string[]
   tuesday?: string[]
   wednesday?: string[]
@@ -37,4 +37,31 @@ export interface ProfileResponse {
   statusCode: number
   message: string
   data: IUser
+}
+
+export type Review = {
+  id: string
+  rating: number
+  reviewText: string
+  bookingId: string
+  createdAt: string
+  updatedAt: string
+  booking: {
+    id: string
+    price: string
+    scheduledAt: string
+    customerNote: string | null
+    status: string
+    acceptedAt: string | null
+    completedAt: string | null
+    cancelledAt: string | null
+    userId: string
+    serviceId: string
+    createdAt: string
+    updatedAt: string
+    user: {
+      id: string
+      name: string
+    }
+  }
 }

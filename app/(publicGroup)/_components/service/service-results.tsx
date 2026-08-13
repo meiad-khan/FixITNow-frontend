@@ -1,4 +1,4 @@
-import { getServices } from "../../_actions/serviceActions"
+import { getServices } from "../../_actions/serviceActions/serviceActions"
 import { Service, ServiceCard } from "./service-card"
 
 export async function ServiceResults() {
