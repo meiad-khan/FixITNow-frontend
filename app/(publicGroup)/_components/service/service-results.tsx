@@ -1,8 +1,15 @@
 import { getServices } from "../../_actions/serviceActions/serviceActions"
 import { Service, ServiceCard } from "./service-card"
 
-export async function ServiceResults() {
-  const result = await getServices()
+export async function ServiceResults({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  
+  const query = await searchParams;
+
+  const result = await getServices({ query });
 
   // console.log("service is ", result);
 

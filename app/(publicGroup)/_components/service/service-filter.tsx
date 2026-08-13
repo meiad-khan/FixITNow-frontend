@@ -26,26 +26,19 @@ const locations = [
 
 export default function ServiceFilter() {
   return (
-    <aside className="w-full lg:w-[240px]">
+    <aside className="w-full lg:w-60">
       <div className="sticky top-24 rounded-xl border bg-background p-5">
-
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-semibold">
-              Filters
-            </h3>
+            <h3 className="font-semibold">Filters</h3>
 
             <p className="mt-1 text-xs text-muted-foreground">
               Refine your results
             </p>
           </div>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 px-2 text-xs"
-          >
+          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs">
             <RotateCcw className="mr-1.5 size-3.5" />
             Reset
           </Button>
@@ -55,16 +48,11 @@ export default function ServiceFilter() {
 
         {/* Category */}
         <div className="space-y-4">
-          <h4 className="text-sm font-medium">
-            Service Type
-          </h4>
+          <h4 className="text-sm font-medium">Service Type</h4>
 
           <div className="space-y-3">
             {categories.map((category) => (
-              <div
-                key={category}
-                className="flex items-center gap-3"
-              >
+              <div key={category} className="flex items-center gap-3">
                 <Checkbox id={category} />
 
                 <Label
@@ -82,16 +70,11 @@ export default function ServiceFilter() {
 
         {/* Location */}
         <div className="space-y-4">
-          <h4 className="text-sm font-medium">
-            Location
-          </h4>
+          <h4 className="text-sm font-medium">Location</h4>
 
           <div className="space-y-3">
             {locations.map((location) => (
-              <div
-                key={location}
-                className="flex items-center gap-3"
-              >
+              <div key={location} className="flex items-center gap-3">
                 <Checkbox id={location} />
 
                 <Label
@@ -109,16 +92,9 @@ export default function ServiceFilter() {
 
         {/* Rating */}
         <div className="space-y-4">
-          <h4 className="text-sm font-medium">
-            Minimum Rating
-          </h4>
+          <h4 className="text-sm font-medium">Minimum Rating</h4>
 
-          <Slider
-            defaultValue={[4]}
-            min={1}
-            max={5}
-            step={0.5}
-          />
+          <Slider defaultValue={[4]} min={1} max={5} step={0.5} />
 
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>1 star</span>
@@ -130,23 +106,15 @@ export default function ServiceFilter() {
 
         {/* Price */}
         <div className="space-y-4">
-          <h4 className="text-sm font-medium">
-            Price Range
-          </h4>
+          <h4 className="text-sm font-medium">Price Range</h4>
 
-          <Slider
-            defaultValue={[500, 10000]}
-            min={0}
-            max={20000}
-            step={500}
-          />
+          <Slider defaultValue={[500, 10000]} min={0} max={20000} step={500} />
 
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>৳0</span>
             <span>৳20,000+</span>
           </div>
         </div>
-
       </div>
     </aside>
   )

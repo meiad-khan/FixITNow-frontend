@@ -2,7 +2,11 @@ import { Button } from "@/components/ui/button"
 import { ServiceContent } from "../_components/service/service-content"
 import ServiceFilter from "../_components/service/service-filter"
 
-export default function ServicePage() {
+export default function ServicePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
@@ -34,11 +38,14 @@ export default function ServicePage() {
         {/* Main content */}
         <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
           {/* Desktop filters */}
-          <aside className="hidden lg:block"> <ServiceFilter /> </aside>
+          <aside className="hidden lg:block">
+            {" "}
+            <ServiceFilter />{" "}
+          </aside>
 
           {/* Service content */}
           <div className="min-w-0">
-            <ServiceContent />
+            <ServiceContent searchParams={searchParams} />
           </div>
         </div>
       </div>

@@ -4,7 +4,11 @@ import ServiceSearchCard from "./serviceSearch"
 import { ServiceResults } from "./service-results"
 import ServiceSkeleton from "./service-skeleton"
 
-export function ServiceContent() {
+export function ServiceContent({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   return (
     <div className="w-full space-y-4">
       {/* Heading + Search */}
@@ -24,7 +28,7 @@ export function ServiceContent() {
 
       {/* Only dynamic content */}
       <Suspense fallback={<ServiceSkeleton />}>
-        <ServiceResults />
+        <ServiceResults searchParams={searchParams} />
       </Suspense>
     </div>
   )
