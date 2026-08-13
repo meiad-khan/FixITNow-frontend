@@ -2,7 +2,15 @@ import { Button } from "@/components/ui/button"
 import { TechnicianContent } from "../_components/technician/technician-content"
 import TechnicianFilter from "../_components/technician/technician-filter"
 
-export default function TechnicianPage() {
+export default async function TechnicianPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  }) {
+  
+  // const searchTerm = await searchParams;
+  // console.log("searchTerm is ", searchTerm);
+  
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
@@ -40,7 +48,7 @@ export default function TechnicianPage() {
 
           {/* Dynamic content */}
           <div className="min-w-0">
-            <TechnicianContent />
+            <TechnicianContent searchParams={searchParams} />
           </div>
         </div>
       </div>

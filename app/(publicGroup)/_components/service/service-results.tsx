@@ -4,7 +4,7 @@ import { Service, ServiceCard } from "./service-card"
 export async function ServiceResults() {
   const result = await getServices()
 
-  console.log("service is ", result);
+  // console.log("service is ", result);
 
   if (!result.success || !result.data?.length) {
     return (

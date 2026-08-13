@@ -3,7 +3,11 @@ import TechnicianSearch from "./technician-search"
 import TechnicianSkeleton from "./technician-skeleton"
 import { TechnicianResults } from "./technician-results"
 
-export function TechnicianContent() {
+export function TechnicianContent({
+  searchParams,
+}: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   return (
     <div className="w-full space-y-8">
       {/* Heading + Search */}
@@ -23,8 +27,8 @@ export function TechnicianContent() {
 
       {/* Only dynamic content */}
       <Suspense fallback={<TechnicianSkeleton />}>
-         <TechnicianResults />
-       </Suspense>
+        <TechnicianResults searchParams={searchParams} />
+      </Suspense>
     </div>
   )
 }
