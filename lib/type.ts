@@ -65,3 +65,34 @@ export type Review = {
     }
   }
 }
+
+
+
+export type CategoryStatus = "AVAILABLE" | "UNAVAILABLE"; 
+
+
+export interface Category {
+  id: string;
+  categoryName: string;
+  description: string;
+  status: CategoryStatus | string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
+export interface ApiResponse<T> {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: T;
+  meta?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+
+export type GetCategoriesResponse = ApiResponse<Category[]>;

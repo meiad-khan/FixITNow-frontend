@@ -1,4 +1,4 @@
-import { getServices } from "../../_actions/serviceActions/serviceActions"
+import { getAllServices } from "../../_actions/serviceActions/serviceActions";
 import { Service, ServiceCard } from "./service-card"
 
 export async function ServiceResults({
@@ -9,13 +9,13 @@ export async function ServiceResults({
   
   const query = await searchParams;
 
-  const result = await getServices({ query });
+  const result = await getAllServices({ query });
 
   // console.log("service is ", result);
 
   if (!result.success || !result.data?.length) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center rounded-xl border bg-background">
+      <div className="flex min-h-100 items-center justify-center rounded-xl border bg-background">
         <div className="text-center">
           <h3 className="text-lg font-semibold">No services found</h3>
 

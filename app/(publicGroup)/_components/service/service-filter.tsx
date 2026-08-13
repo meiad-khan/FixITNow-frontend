@@ -7,24 +7,61 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useRef } from "react"
 
-const categories = [
-  "Plumbing",
-  "Electrical",
-  "Painting",
-  "Cleaning",
-  "AC Repair",
-  "Appliance Repair",
-]
+export default function ServiceFilter({
+  technicianLocation,
+  categoryNames,
+}: {
+  technicianLocation: string[]
+  categoryNames: string[]
+  }) {
+  
+   const pathname = usePathname()
+   const searchParams = useSearchParams()
+  const router = useRouter()
+  
+   const debouncedReference = useRef<ReturnType<typeof setTimeout> | null>(null)
+   
+   const updateParam = (key: string, value: string) => {
+     console.log("key is ", key, "value is ", value)
 
-const locations = [
-  "Dhaka",
-  "Gazipur",
-  "Narayanganj",
-  "Chittagong",
-]
+     if (debouncedReference.current) {
+       clearTimeout(debouncedReference.current)
+     }
+     debouncedReference.current = setTimeout(() => {
+       const params = new URLSearchParams(searchParams.toString())
+       if (!value || value === "all") {
+         params.delete(key)
+       } else {
+         params.set(key, value)
+       }
+       router.replace(`${pathname}?${params.toString()}`)
+     }, 500)
+   }
+  
+  
+  const minPrice = Number(searchParams.get("minPrice") ?? 500)
+  const maxPrice = Number(searchParams.get("maxPrice") ?? 10000)
+  
+  const updatePriceRange = (values: number[]) => {
+    if (debouncedReference.current) {
+      clearTimeout(debouncedReference.current)
+    }
 
-export default function ServiceFilter() {
+    debouncedReference.current = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString())
+
+      params.set("minPrice", values[0].toString())
+      params.set("maxPrice", values[1].toString())
+
+      router.replace(`${pathname}?${params.toString()}`)
+    }, 500)
+  }
+  
+  
   return (
     <aside className="w-full lg:w-60">
       <div className="sticky top-24 rounded-xl border bg-background p-5">
@@ -38,7 +75,9 @@ export default function ServiceFilter() {
             </p>
           </div>
 
-          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs">
+          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs"
+          onClick={()=>router.replace(`${pathname}`)}
+          >
             <RotateCcw className="mr-1.5 size-3.5" />
             Reset
           </Button>
@@ -47,72 +86,76 @@ export default function ServiceFilter() {
         <Separator className="my-5" />
 
         {/* Category */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium">Service Type</h4>
+        <div className="space-y-2">
+          <h4 className="text-sm font-medium">Service Category</h4>
 
-          <div className="space-y-3">
-            {categories.map((category) => (
-              <div key={category} className="flex items-center gap-3">
-                <Checkbox id={category} />
+          <div>
+            <Select
+              value={searchParams.get("category") ?? "all"}
+              onValueChange={(value) => updateParam("category", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
 
-                <Label
-                  htmlFor={category}
-                  className="cursor-pointer text-sm font-normal"
-                >
-                  {category}
-                </Label>
-              </div>
-            ))}
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+
+                {categoryNames.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
         <Separator className="my-5" />
 
         {/* Location */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <h4 className="text-sm font-medium">Location</h4>
 
           <div className="space-y-3">
-            {locations.map((location) => (
-              <div key={location} className="flex items-center gap-3">
-                <Checkbox id={location} />
+            <Select
+              value={searchParams.get("location") ?? "all"}
+              onValueChange={(value) => updateParam("location", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="All Locations" />
+              </SelectTrigger>
 
-                <Label
-                  htmlFor={location}
-                  className="cursor-pointer text-sm font-normal"
-                >
-                  {location}
-                </Label>
-              </div>
-            ))}
-          </div>
-        </div>
+              <SelectContent>
+                <SelectItem value="all">All Locations</SelectItem>
 
-        <Separator className="my-5" />
-
-        {/* Rating */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium">Minimum Rating</h4>
-
-          <Slider defaultValue={[4]} min={1} max={5} step={0.5} />
-
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>1 star</span>
-            <span>5 stars</span>
+                {technicianLocation.map((location) => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
         <Separator className="my-5" />
 
         {/* Price */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <h4 className="text-sm font-medium">Price Range</h4>
 
-          <Slider defaultValue={[500, 10000]} min={0} max={20000} step={500} />
+          <Slider
+            defaultValue={[minPrice, maxPrice]}
+            min={0}
+            max={20000}
+            step={500}
+            onValueChange={updatePriceRange}
+          />
 
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>৳0</span>
-            <span>৳20,000+</span>
+            <span>৳{minPrice}</span>
+            <span>৳{maxPrice}+</span>
           </div>
         </div>
       </div>

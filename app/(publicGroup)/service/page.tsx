@@ -1,12 +1,31 @@
 import { Button } from "@/components/ui/button"
 import { ServiceContent } from "../_components/service/service-content"
 import ServiceFilter from "../_components/service/service-filter"
+import { getAllTechnician } from "../_actions/technicianActions/technicianActions"
+import { Technician } from "../_components/technician/technician-card"
+import { getAllCategory } from "../_actions/serviceActions/serviceActions"
+import { Category } from "@/lib/type"
 
-export default function ServicePage({
+export default async function ServicePage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
+  }) {
+  
+  const technician = await getAllTechnician({})
+  const technicianLocation: string[] = [...new Set(
+    (technician.data as Technician[]).map((tech) => tech.location)
+  )];
+
+  const categories = await getAllCategory();
+  // console.log("categories is ", categories);
+  const categoryNames = [...new Set(
+    (categories.data as Category[]).map((category)=>category.categoryName)
+  )]
+  
+  // console.log("names ", categoryNames);
+  // console.log('Locaiton ', technicianLocation);
+  
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
@@ -39,8 +58,10 @@ export default function ServicePage({
         <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
           {/* Desktop filters */}
           <aside className="hidden lg:block">
-            {" "}
-            <ServiceFilter />{" "}
+            <ServiceFilter
+              technicianLocation={technicianLocation}
+              categoryNames={categoryNames}
+            />
           </aside>
 
           {/* Service content */}

@@ -1,7 +1,7 @@
 "use server"
 
 export const getAllTechnician = async ({
-  query,
+  query
 }: {
   query?: { [key: string]: string | string[] | undefined }
   }) => {
