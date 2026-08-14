@@ -12,8 +12,8 @@ export default function LoginPage() {
               Enter your credentials to access your account
             </p>
           </div>
-          {/* Form */}
-          <LoginForm></LoginForm>
+          {/* Form */}        
+            <LoginForm></LoginForm>
         </div>
       </div>
     </>

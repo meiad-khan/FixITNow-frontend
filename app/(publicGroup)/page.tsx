@@ -9,13 +9,13 @@ import WhyChooseUs from "./_components/home/WhyChooseUs";
 export default function Page() {
   return (
     <main>
-      <HeroSection />
+      <HeroSection/>
       <PopularServices />
       <WhyChooseUs />
       <HowItWorks />
       <FeaturedTechnicians />
       <CustomerReviews />
-      <BookingCTA/>
+      <BookingCTA />
     </main>
   )
 }

@@ -11,6 +11,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { loginAction, LoginState } from '../_actions/authActions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const LoginForm = () => {
 
@@ -85,8 +86,19 @@ const LoginForm = () => {
             <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
         </div>
-        <Button type="submit" disabled={pending}>{pending?<Spinner/>:"Login"}</Button>
+        <Button type="submit" disabled={pending}>
+          {pending ? <Spinner /> : "Login"}
+        </Button>
       </Card>
+      <div className="text-center text-sm text-slate-500">
+        New to FixIT?{" "}
+        <Link
+          href="/register"
+          className="font-medium text-indigo-600 underline underline-offset-4 transition-colors hover:text-indigo-500"
+        >
+          Create an account
+        </Link>
+      </div>
     </form>
   )
 }

@@ -5,8 +5,11 @@ import { ArrowRight, Search, ShieldCheck, Star, Users } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import HeroSearch from "./HeroSearch"
 
 export default function HeroSection() {
+
+
   return (
     <section className="overflow-hidden border-b bg-muted/30">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
@@ -30,17 +33,7 @@ export default function HeroSection() {
             </p>
 
             {/* Search */}
-            <div className="mt-7 flex w-full max-w-xl flex-col gap-2 rounded-xl border bg-background p-2 shadow-sm sm:flex-row">
-              <div className="relative flex-1">
-                <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="What service do you need?"
-                  className="h-11 border-0 pl-10 shadow-none focus-visible:ring-0"
-                />
-              </div>
-
-              <Button className="h-11 px-6">Search</Button>
-            </div>
+            <HeroSearch/>
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">

@@ -19,7 +19,7 @@ export const getProfile = async () => {
     },
     cache: "force-cache",
     next: {
-      revalidate: 60 * 60 * 24 * 7, //7day
+      revalidate: 60 * 60 * 24, //7day
       tags: ["my-profile"]
     }
   });

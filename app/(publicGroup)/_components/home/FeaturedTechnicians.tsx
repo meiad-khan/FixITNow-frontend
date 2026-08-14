@@ -1,40 +1,19 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, MapPin, Star } from "lucide-react"
+import { ArrowRight, BriefcaseBusiness, MapPin, Star } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { getAllTechnician } from "../../_actions/technicianActions/technicianActions"
+import { Technician } from "../technician/technician-card"
 
-const technicians = [
-  {
-    name: "Rahim Ahmed",
-    service: "Professional Plumber",
-    location: "Dhaka",
-    rating: "4.9",
-    experience: "6 Years",
-    image: "/images/home/plumber.jpg",
-  },
-  {
-    name: "Tanvir Hasan",
-    service: "Electrical Technician",
-    location: "Dhaka",
-    rating: "4.8",
-    experience: "5 Years",
-    image: "/images/home/electrician.jpg",
-  },
-  {
-    name: "Sakib Khan",
-    service: "AC Specialist",
-    location: "Dhaka",
-    rating: "4.9",
-    experience: "7 Years",
-    image: "/images/home/ac-repair.jpg",
-  },
-]
+export default async function FeaturedTechnicians() {
 
-export default function FeaturedTechnicians() {
+  const technicians = await getAllTechnician({})
+  const experiencedTechnician = (technicians.data as Technician[]).filter((tech) => tech.experienceYears > 5);
+
   return (
     <section className="bg-muted/40 py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -61,52 +40,68 @@ export default function FeaturedTechnicians() {
           </Button>
         </div>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {technicians.map((technician) => (
-            <Card key={technician.name} className="overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <Avatar className="size-16">
-                    <AvatarImage src={technician.image} alt={technician.name} />
-                    <AvatarFallback>
-                      {technician.name
-                        .split(" ")
-                        .map((name) => name[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
+        <div className="mt-10 overflow-hidden">
+          <div className="animate-marquee flex w-max gap-5">
+            {[...experiencedTechnician, ...experiencedTechnician].map(
+              (technician, index) => (
+                <Card
+                  key={`${technician.user.name}-${index}`}
+                  className="w-[320px] shrink-0 overflow-hidden"
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-4">
+                      <Avatar className="size-16">
+                        <AvatarImage
+                          src={technician.profilePhoto!}
+                          alt={technician.user.name}
+                        />
 
-                  <div className="min-w-0">
-                    <h3 className="truncate font-semibold">
-                      {technician.name}
-                    </h3>
+                        <AvatarFallback>
+                          {technician.user.name
+                            .split(" ")
+                            .map((name) => name[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
 
-                    <p className="truncate text-sm text-muted-foreground">
-                      {technician.service}
-                    </p>
+                      <div className="min-w-0">
+                        <h3 className="truncate font-semibold">
+                          {technician.user.name}
+                        </h3>
 
-                    <div className="mt-1 flex items-center gap-1 text-sm">
-                      <Star className="size-4 fill-yellow-500 text-yellow-500" />
-                      <span className="font-medium">{technician.rating}</span>
+                        <p className="truncate text-sm text-muted-foreground">
+                          {technician.services[0].serviceName}
+                        </p>
+
+                        <div className="mt-1 flex items-center gap-1 text-sm">
+                          <Star className="size-4 fill-yellow-500 text-yellow-500" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <Badge variant="secondary">
-                    <MapPin className="mr-1 size-3" />
-                    {technician.location}
-                  </Badge>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      <Badge variant="secondary">
+                        <MapPin className="mr-1 size-3" />
+                        {technician.location}
+                      </Badge>
 
-                  <Badge variant="outline">{technician.experience}</Badge>
-                </div>
+                      <Badge
+                        variant="secondary"
+                        className="gap-1.5 font-normal"
+                      >
+                        <BriefcaseBusiness className="size-3.5" />
+                        {technician.experienceYears} years experience
+                      </Badge>
+                    </div>
 
-                <Button asChild variant="outline" className="mt-5 w-full">
-                  <Link href="/technician">View Profile</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                    <Button asChild variant="outline" className="mt-5 w-full">
+                      <Link href={`/technician/${technician.id}`}>View Profile</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )
+            )}
+          </div>
         </div>
       </div>
     </section>
