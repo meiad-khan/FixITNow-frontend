@@ -1,25 +1,79 @@
 "use client"
 
 import { RotateCcw } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useRef } from "react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-const serviceTypes = [
-  "Plumbing",
-  "Electrical",
-  "Painting",
-  "Cleaning",
-  "AC Repair",
-  "Appliance Repair",
-]
+export default function TechnicianFilter({
+  technicianLocation,
+  categoryNames,
+}: {
+  technicianLocation: string[]
+  categoryNames: string[]
+}) {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
-const locations = ["Dhaka", "Gazipur", "Narayanganj", "Chittagong"]
+  const debouncedReference = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-export default function TechnicianFilter() {
+  const updateParam = (key: string, value: string) => {
+    // console.log("key is ", key, "value is ", value)
+
+    if (debouncedReference.current) {
+      clearTimeout(debouncedReference.current)
+    }
+    debouncedReference.current = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString())
+      if (!value || value === "all") {
+        params.delete(key)
+      } else {
+        params.set(key, value)
+      }
+      router.replace(`${pathname}?${params.toString()}`)
+    }, 500)
+  }
+
+  const rating = Number(searchParams.get("rating") ?? 4)
+
+  const updateRating = (values: number[]) => {
+    if (debouncedReference.current) {
+      clearTimeout(debouncedReference.current)
+    }
+
+    debouncedReference.current = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString())
+
+      params.set("rating", values[0].toString())
+
+      router.replace(`${pathname}?${params.toString()}`)
+    }, 500)
+  }
+
+  const minExperience = Number(searchParams.get("minExperience") ?? 0)
+
+  const maxExperience = Number(searchParams.get("maxExperience") ?? 15)
+
+  const updateExperienceRange = (values: number[]) => {
+    if (debouncedReference.current) {
+      clearTimeout(debouncedReference.current)
+    }
+
+    debouncedReference.current = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString())
+
+      params.set("minExperience", values[0].toString())
+      params.set("maxExperience", values[1].toString())
+
+      router.replace(`${pathname}?${params.toString()}`)
+    }, 500)
+  }
+
+
   return (
     <aside className="w-full">
       <div className="sticky top-24 w-full rounded-xl border bg-background p-5">
@@ -33,7 +87,9 @@ export default function TechnicianFilter() {
             </p>
           </div>
 
-          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs">
+          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs"
+          onClick={()=>router.replace(`${pathname}`)}
+          >
             <RotateCcw className="mr-1.5 size-3.5" />
             Reset
           </Button>
@@ -41,45 +97,57 @@ export default function TechnicianFilter() {
 
         <Separator className="my-5" />
 
-        {/* Service Type */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium">Service Type</h4>
+        {/* Category */}
+        <div className="space-y-2">
+          <h4 className="text-sm font-medium">Service Category</h4>
 
-          <div className="space-y-3">
-            {serviceTypes.map((type) => (
-              <div key={type} className="flex items-center gap-3">
-                <Checkbox id={`service-${type}`} />
+          <div>
+            <Select
+              value={searchParams.get("category") ?? "all"}
+              onValueChange={(value) => updateParam("category", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
 
-                <Label
-                  htmlFor={`service-${type}`}
-                  className="cursor-pointer text-sm font-normal"
-                >
-                  {type}
-                </Label>
-              </div>
-            ))}
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+
+                {categoryNames.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
         <Separator className="my-5" />
 
         {/* Location */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <h4 className="text-sm font-medium">Location</h4>
 
           <div className="space-y-3">
-            {locations.map((location) => (
-              <div key={location} className="flex items-center gap-3">
-                <Checkbox id={`location-${location}`} />
+            <Select
+              value={searchParams.get("location") ?? "all"}
+              onValueChange={(value) => updateParam("location", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="All Locations" />
+              </SelectTrigger>
 
-                <Label
-                  htmlFor={`location-${location}`}
-                  className="cursor-pointer text-sm font-normal"
-                >
-                  {location}
-                </Label>
-              </div>
-            ))}
+              <SelectContent>
+                <SelectItem value="all">All Locations</SelectItem>
+
+                {technicianLocation.map((location) => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -89,11 +157,17 @@ export default function TechnicianFilter() {
         <div className="space-y-4">
           <h4 className="text-sm font-medium">Experience</h4>
 
-          <Slider defaultValue={[2]} min={0} max={15} step={1} />
+          <Slider
+            defaultValue={[minExperience, maxExperience]}
+            min={0}
+            max={15}
+            step={1}
+            onValueChange={updateExperienceRange}
+          />
 
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>0 years</span>
-            <span>15+ years</span>
+            <span>{minExperience} years</span>
+            <span>{maxExperience}+ years</span>
           </div>
         </div>
 
@@ -101,9 +175,15 @@ export default function TechnicianFilter() {
 
         {/* Rating */}
         <div className="space-y-4">
-          <h4 className="text-sm font-medium">Minimum Rating</h4>
+          <h4 className="text-sm font-medium">Rating</h4>
 
-          <Slider defaultValue={[4]} min={1} max={5} step={0.5} />
+          <Slider
+            defaultValue={[rating]}
+            min={1}
+            max={5}
+            step={0.5}
+            onValueChange={updateRating}
+          />
 
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>1 star</span>

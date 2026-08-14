@@ -7,7 +7,7 @@ export async function TechnicianResults({
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
   }) {
     const query = await searchParams;
-    console.log("searchTerm is ", query);
+    // console.log("searchTerm is ", query);
   
     const result = await getAllTechnician({query})
 
