@@ -15,14 +15,13 @@ export const getProfile = async () => {
 
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/me`, {
     headers: {
-      Cookie: `accessToken=${accessToken}`
+      Cookie: `accessToken=${accessToken}`,
     },
-    cache: "force-cache",
     next: {
-      revalidate: 60 * 60 * 24, //7day
-      tags: ["my-profile"]
-    }
-  });
+      revalidate: 86400, 
+      tags: ["my-profile"],
+    },
+  })
   const result = await res.json();
   return result;
 }

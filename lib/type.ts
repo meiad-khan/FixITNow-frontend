@@ -25,8 +25,8 @@ export interface IUser {
   name: string
   email: string
   phone: string | null
-  role: string // : "TECHNICIAN" | "USER" | "ADMIN"
-  userStatus: string //  literal union like: "UNBAN" | "BANNED"
+  role: "TECHNICIAN" | "USER" | "ADMIN"
+  userStatus: "UNBAN" | "BANNED"
   createdAt: string
   updatedAt: string
   technicianProfile: TechnicianProfile
@@ -66,40 +66,40 @@ export type Review = {
   }
 }
 
-
-
-export type CategoryStatus = "AVAILABLE" | "UNAVAILABLE"; 
-
+export type CategoryStatus = "AVAILABLE" | "UNAVAILABLE"
 
 export interface Category {
-  id: string;
-  categoryName: string;
-  description: string;
-  status: CategoryStatus | string;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  categoryName: string
+  description: string
+  status: CategoryStatus | string
+  createdAt: string
+  updatedAt: string
 }
-
 
 export interface ApiResponse<T> {
-  success: boolean;
-  statusCode: number;
-  message: string;
-  data: T;
+  success: boolean
+  statusCode: number
+  message: string
+  data: T
   meta?: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
 }
 
+export type GetCategoriesResponse = ApiResponse<Category[]>
 
-export type GetCategoriesResponse = ApiResponse<Category[]>;
-
-
-export type BookingStatus = "REQUESTED" | "ACCEPTED" | "DECLINED" |
-"PAID" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED"
+export type BookingStatus =
+  | "REQUESTED"
+  | "ACCEPTED"
+  | "DECLINED"
+  | "PAID"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "CANCELLED"
 
 export interface ServiceUser {
   name: string
@@ -111,14 +111,14 @@ export interface ServiceTechnician {
 }
 
 export interface ServiceDetails {
-  serviceName:string
+  serviceName: string
   technician: ServiceTechnician
 }
 
 export interface Booking {
   id: string
   price: string
-  scheduledAt: string // ISO 8601 Date String
+  scheduledAt: string 
   customerNote: string | null
   status:
     | "REQUESTED"
@@ -133,8 +133,8 @@ export interface Booking {
   cancelledAt: string | null
   userId: string
   serviceId: string
-  createdAt: string // ISO 8601 Date String
-  updatedAt: string // ISO 8601 Date String
+  createdAt: string 
+  updatedAt: string 
   service: ServiceDetails
 }
 
@@ -144,3 +144,48 @@ export interface BookingResponse {
   message: string
   data: Booking[]
 }
+
+
+export type PaymentProvider = "SSLCOMMERZ"
+export type PaymentMethod = "CARD" | "BKASH" | "NAGAD" | "BANK"
+export type PaymentStatus = "COMPLETED" | "PENDING" | "FAILED" | "REFUNDED"
+
+export interface TechnicianUserInfo {
+  name: string
+}
+
+export interface TechnicianInfo {
+  user: TechnicianUserInfo
+}
+
+export interface PaymentServiceInfo {
+  serviceName: string
+  technician: TechnicianInfo
+}
+
+export interface PaymentBookingInfo {
+  service: PaymentServiceInfo
+}
+
+export interface PaymentRecord {
+  id: string
+  transactionId: string
+  amount: string
+  paidAt: string | null
+  provider: PaymentProvider | string
+  method: PaymentMethod | string
+  status: PaymentStatus
+  bookingId: string
+  createdAt: string
+  updatedAt: string
+  booking: PaymentBookingInfo
+}
+
+export interface PaymentHistoryResponse {
+  success: boolean
+  statusCode: number
+  message: string
+  data: PaymentRecord[]
+}
+
+

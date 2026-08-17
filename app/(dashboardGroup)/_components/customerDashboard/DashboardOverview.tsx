@@ -11,7 +11,7 @@ export default async function DashboardOverview() {
   // console.log("booking is ", bookings)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 md:p-10 ">
       <DashboardHeader />
 
       <DashboardStats bookings={bookings} />
