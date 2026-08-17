@@ -26,6 +26,7 @@ export const loginAction = async (prevState:LoginState, formData: FormData) => {
     },
     body: JSON.stringify(payload)
   });
+
   const result = await res.json();
    
   if (result.success) {
@@ -46,6 +47,7 @@ export const loginAction = async (prevState:LoginState, formData: FormData) => {
       role:decodedToken.role
     }
   }
+  // console.log("logged in user is ", result);
   // console.log(result, "result")
   return result;
 }
@@ -55,7 +57,14 @@ export type RegisterState = {
   success: boolean;
   statusCode: number;
   message: string;
+  errorDetails?: [
+    {
+      path?: string
+      message?:string
+    }
+  ]
 }
+
 
 export const registerAction = async (prevState:RegisterState, formData:FormData):Promise<RegisterState> => {
   
@@ -73,6 +82,6 @@ export const registerAction = async (prevState:RegisterState, formData:FormData)
     body: JSON.stringify(payload),
   })
   const result: RegisterState = await res.json()
-  console.log("result", result);
+  // console.log("result", result);
   return result
 }

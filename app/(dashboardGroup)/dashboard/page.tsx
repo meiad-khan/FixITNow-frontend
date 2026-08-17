@@ -1,11 +1,10 @@
 import React from 'react'
+import DashboardOverview from '../_components/customerDashboard/DashboardOverview'
 
-const UserDashboardPage = () => {
+const CustomerDashboardPage = () => {
   return (
-    <div>
-      User dashboard
-    </div>
+    <DashboardOverview/>
   )
 }
 
-export default UserDashboardPage
+export default CustomerDashboardPage

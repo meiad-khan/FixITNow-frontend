@@ -30,7 +30,7 @@ const RegisterForm = () => {
       name: "",
       email: "",
       password: "",
-      phone: "",
+      phone:"",
       role: "CUSTOMER",
     },
   })
@@ -42,7 +42,7 @@ const RegisterForm = () => {
     formData.append("email", data.email)
     formData.append("password", data.password)
     formData.append("role", data.role)
-    if (data.phone) {
+    if (data.phone && data.phone.trim() !== "") {
       formData.append("phone", data.phone)
     }
     startTransition(() => {
@@ -57,15 +57,21 @@ const RegisterForm = () => {
       toast.success(state.message);
       router.push("/login");
     } else {
-      toast.error(state.message);
+      if (state.errorDetails) {
+        if (state.errorDetails[0].message) {
+          toast.error(state.errorDetails[0].message);
+        }
+      } else {        
+        toast.error(state.message);
+      }
     }
   }, [state, router]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">  
-      <Card className="space-y-4 p-5">       
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <Card className="space-y-4 p-5">
         {/* Name */}
-        <div className="space-y-1">         
+        <div className="space-y-1">
           <Input
             type="text"
             placeholder="Enter your name"
@@ -76,7 +82,7 @@ const RegisterForm = () => {
           )}
         </div>
         {/* Email */}
-        <div className="space-y-1">        
+        <div className="space-y-1">
           <Input
             type="email"
             placeholder="Enter your email"
@@ -100,7 +106,6 @@ const RegisterForm = () => {
         </div>
         {/* Phone */}
         <div className="space-y-1">
-       
           <Input
             type="text"
             placeholder="Enter your phone (optional)"
@@ -111,29 +116,29 @@ const RegisterForm = () => {
           )}
         </div>
         {/* Role */}
-        <div className="space-y-1">         
+        <div className="space-y-1">
           <select
             {...register("role")}
             className="w-full rounded-md border px-3 py-2 text-sm"
-          >           
+          >
             <option value="CUSTOMER">CUSTOMER</option>
+            <option value="TECHNICIAN">TECHNICIAN</option>
           </select>
           {errors.role && (
             <p className="text-sm text-red-500"> {errors.role.message} </p>
           )}
         </div>
         <Button type="submit" disabled={pending}>
-          
           {pending ? <Spinner /> : "Register"}
         </Button>
       </Card>
       <div className="text-center text-sm text-slate-500">
-        Already have an account? 
+        Already have an account?
         <Link
           href="/login"
           className="font-medium text-indigo-600 underline underline-offset-4 transition-colors hover:text-indigo-500"
         >
-           Log In
+          Log In
         </Link>
       </div>
     </form>

@@ -96,3 +96,51 @@ export interface ApiResponse<T> {
 
 
 export type GetCategoriesResponse = ApiResponse<Category[]>;
+
+
+export type BookingStatus = "REQUESTED" | "ACCEPTED" | "DECLINED" |
+"PAID" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED"
+
+export interface ServiceUser {
+  name: string
+}
+
+export interface ServiceTechnician {
+  id: string
+  user: ServiceUser
+}
+
+export interface ServiceDetails {
+  serviceName:string
+  technician: ServiceTechnician
+}
+
+export interface Booking {
+  id: string
+  price: string
+  scheduledAt: string // ISO 8601 Date String
+  customerNote: string | null
+  status:
+    | "REQUESTED"
+    | "ACCEPTED"
+    | "DECLINED"
+    | "PAID"
+    | "IN_PROGRESS"
+    | "COMPLETED"
+    | "CANCELLED"
+  acceptedAt: string | null
+  completedAt: string | null
+  cancelledAt: string | null
+  userId: string
+  serviceId: string
+  createdAt: string // ISO 8601 Date String
+  updatedAt: string // ISO 8601 Date String
+  service: ServiceDetails
+}
+
+export interface BookingResponse {
+  success: boolean
+  statusCode: number
+  message: string
+  data: Booking[]
+}

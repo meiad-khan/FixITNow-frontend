@@ -10,7 +10,10 @@ export const loginSchema = z.object({
 
 export const registerSchema = loginSchema.extend({
   name: z.string().trim().min(1, "Name is required"),
-  phone: z.string().trim().optional(),
+  phone: z
+    .string()
+    .trim()
+    .optional(),
   role: z.enum(["TECHNICIAN", "CUSTOMER"]),
 })
 

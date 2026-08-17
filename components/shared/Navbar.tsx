@@ -6,6 +6,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import {
   DropdownMenu,
@@ -18,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 // import { logOut } from "@/service/logOut"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
@@ -30,6 +31,7 @@ import {
   technicianOptions,
   UserOption,
 } from "../utils/options"
+import { cn } from "@/lib/utils"
 
 type NavLink = {
   label: string
@@ -47,6 +49,7 @@ export function Navbar({ user }: { user: ProfileResponse }) {
   // console.log("user is ", user);
 
   const router = useRouter()
+  const pathname = usePathname();
 
   let userOptions: UserOption[] = []
 
@@ -82,16 +85,30 @@ export function Navbar({ user }: { user: ProfileResponse }) {
         {/* Nav links */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="gap-1">
-            {navLinks.map((link) => (
-              <NavigationMenuItem key={link.label}>
-                <NavigationMenuLink href={link.href} className="text-md">
-                  {link.label}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <NavigationMenuItem key={link.label}>
+                  {/* asChild lets Next.js Link handle client-side routing */}
+                  <NavigationMenuLink
+                    asChild
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      "text-md transition-colors",
+                      // Modify active styles here
+                      isActive &&
+                        "bg-accent font-semibold text-accent-foreground underline decoration-2 underline-offset-4"
+                    )}
+                  >
+                    <Link href={link.href}>{link.label}</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              )
+            })}
           </NavigationMenuList>
         </NavigationMenu>
 
+        
         {/* User dropdown */}
         {user.success ? (
           <DropdownMenu>
@@ -141,7 +158,9 @@ export function Navbar({ user }: { user: ProfileResponse }) {
               <Button className="cursor-pointer">Login</Button>
             </Link>
             <Link href={"/register"}>
-              <Button className="cursor-pointer" variant="outline">Sign Up</Button>
+              <Button className="cursor-pointer" variant="outline">
+                Sign Up
+              </Button>
             </Link>
           </div>
         )}
