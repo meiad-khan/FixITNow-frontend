@@ -21,7 +21,6 @@ export interface SidebarItem {
 }
 
 export const sidebarItems: Record<UserRole, SidebarItem[]> = {
-  
   CUSTOMER: [
     { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { title: "Bookings", href: "/dashboard/bookings", icon: Wrench },
@@ -34,7 +33,7 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
       href: "/technician-dashboard",
       icon: LayoutDashboard,
     },
-    { title: "My Profile", href: "/technician/profile", icon: User },
+    { title: "My Profile", href: "/technician-dashboard/profile", icon: User },
     {
       title: "My Services",
       href: "/technician/services",

@@ -13,7 +13,7 @@ const TechnicianDashboardPage = async () => {
 
   const { stats, nextThreeJobs, latestRequests } = getDashboardData(bookings.data)
 
-  console.log("booking data is ", bookings.data);
+  // console.log("booking data is ", bookings.data);
 
   return (
     <div className="space-y-6 p-4 sm:p-6">

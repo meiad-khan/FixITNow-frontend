@@ -62,6 +62,8 @@ export const getAllTechnician = async ({
   return result
 }
 
+
+
 export const getSingleTechnician = async (id: string) => {
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/technician/${id}`, {
     next: {
@@ -69,5 +71,6 @@ export const getSingleTechnician = async (id: string) => {
     }
   })
   const result = await res.json();
+  console.log("result is ", result);
   return result;
 }

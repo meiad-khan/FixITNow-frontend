@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidateTag } from "next/cache"
+import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 
 export const getMyBookings = async () => {
@@ -73,8 +73,7 @@ export const updateProfile = async (formData: FormData) => {
       message: result.message || "Failed to update profile",
     }
   }
-
-  revalidateTag("my-profile","max");
+  revalidatePath("/dashboard/profile");
 
   return result
 }
