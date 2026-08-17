@@ -1,5 +1,5 @@
 import React from "react"
-import { getAllBookingsForTechnician } from "../_actions/technician-bookings"
+import { getAllBookingsForTechnician } from "../_actions/technicianDashboard/technician-bookings"
 import { getProfile } from "@/service/getProfile"
 import { StatsCards } from "../_components/technicianDashboard/StatsCards"
 import { UpcomingJobsTable } from "../_components/technicianDashboard/UpcomingJobsTable"

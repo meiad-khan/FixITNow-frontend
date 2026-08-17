@@ -36,15 +36,14 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
     { title: "My Profile", href: "/technician-dashboard/profile", icon: User },
     {
       title: "My Services",
-      href: "/technician/services",
+      href: "/technician-dashboard/my-services",
       icon: BriefcaseBusiness,
     },
     {
-      title: "Availability",
-      href: "/technician/availability",
-      icon: CalendarDays,
+      title: "Bookings",
+      href: "/technician-dashboard/bookings",
+      icon: ClipboardList,
     },
-    { title: "Bookings", href: "/technician/bookings", icon: ClipboardList },
   ],
   ADMIN: [
     { title: "Dashboard", href: "/admin-dashboard", icon: LayoutDashboard },

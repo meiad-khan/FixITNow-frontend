@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Check, X, Clock3 } from "lucide-react"
 import { formatDateTime } from "./dashboard-utils"
-import { updateBookingStatus } from "../../_actions/update-booking-status"
+import { updateBookingStatus } from "../../_actions/technicianDashboard/update-booking-status"
 import { TechnicianBooking } from "@/lib/technician/type"
 
 interface PendingRequestsProps {

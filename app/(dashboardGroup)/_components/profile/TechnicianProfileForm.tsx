@@ -20,7 +20,7 @@ import {
   type AvailabilityFormState,
   type TechnicianProfileData,
 } from "./profile-utils"
-import { updateTechnicianProfile } from "../../_actions/update-profile"
+import { updateTechnicianProfile } from "../../_actions/technicianDashboard/update-profile"
 
 interface TechnicianProfileFormProps {
   profile: TechnicianProfileData
@@ -79,7 +79,6 @@ export function TechnicianProfileForm({ profile }: TechnicianProfileFormProps) {
     }))
   }
 
-
   function handleSave() {
     startTransition(async () => {
       try {
@@ -102,7 +101,6 @@ export function TechnicianProfileForm({ profile }: TechnicianProfileFormProps) {
     })
   }
 
-  
   return (
     <div className="space-y-6">
       {/* Header card */}

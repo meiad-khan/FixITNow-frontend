@@ -2,8 +2,7 @@
 
 import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
-import type { Availability } from "../_components/profile/profile-utils"
-
+import type { Availability } from "../../_components/profile/profile-utils"
 
 interface UpdateProfilePayload {
   name?: string
