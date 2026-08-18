@@ -23,5 +23,6 @@ export const getProfile = async () => {
     },
   })
   const result = await res.json();
+  console.log("result is ",result, result.data)
   return result;
 }

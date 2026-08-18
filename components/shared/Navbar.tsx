@@ -38,28 +38,36 @@ type NavLink = {
   href: string
 }
 
-const navLinks: NavLink[] = [
+interface AppNavLink extends NavLink{
+  allowedRole?: Array<"CUSTOMER" | "TECHNICIAN" | "ADMIN">;
+}
+
+const navLinks: AppNavLink[] = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/service" },
-  {label:"Technicians", href:"/technician"},
-  { label: "About", href: "/about" },
+  { label: "Technician", href: "/technician" },
+  {label:"Be A Technician", href:"/be-a-technician", allowedRole:["TECHNICIAN"]}
 ]
+
+const UserOptionss: Record<string, UserOption[]> = {
+  CUSTOMER: customerOptions,
+  TECHNICIAN: technicianOptions,
+  ADMIN:adminOptions
+}
+
 
 export function Navbar({ user }: { user: ProfileResponse }) {
   // console.log("user is ", user);
 
   const router = useRouter()
   const pathname = usePathname();
+  const userRole = user.data?.role;
 
-  let userOptions: UserOption[] = []
-
-  if (user.data?.role === "CUSTOMER") {
-    userOptions = customerOptions
-  } else if (user.data?.role === "TECHNICIAN") {
-    userOptions = technicianOptions
-  } else if (user.data?.role === "ADMIN") {
-    userOptions = adminOptions
-  }
+  const visibleNavLinks = navLinks.filter(link => {
+    if (!link.allowedRole) return true;//public link is here
+    return userRole && link.allowedRole.includes(userRole);
+  })
+  const userOptions = userRole ? UserOptionss[userRole] || [] : [];
 
   const handleAction = async (action: string) => {
     if (action === "logout") {
@@ -85,8 +93,8 @@ export function Navbar({ user }: { user: ProfileResponse }) {
         {/* Nav links */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="gap-1">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+            {visibleNavLinks.map((link) => {
+              const isActive = pathname === link.href
               return (
                 <NavigationMenuItem key={link.label}>
                   {/* asChild lets Next.js Link handle client-side routing */}
@@ -108,7 +116,6 @@ export function Navbar({ user }: { user: ProfileResponse }) {
           </NavigationMenuList>
         </NavigationMenu>
 
-        
         {/* User dropdown */}
         {user.success ? (
           <DropdownMenu>

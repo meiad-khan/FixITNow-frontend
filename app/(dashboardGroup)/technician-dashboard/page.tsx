@@ -6,10 +6,15 @@ import { UpcomingJobsTable } from "../_components/technicianDashboard/UpcomingJo
 import { PendingRequests } from "../_components/technicianDashboard/PendingRequests"
 import { QuickActions } from "../_components/technicianDashboard/QuickActions"
 import { getDashboardData } from "../_components/technicianDashboard/dashboard-utils"
+import { redirect } from "next/navigation"
 
 const TechnicianDashboardPage = async () => {
+
   const bookings = await getAllBookingsForTechnician()
-  const technician = await getProfile()
+  if (bookings.message === "Technician not found") {
+    redirect("/be-a-technician");
+  }
+    const technician = await getProfile()
 
   const { stats, nextThreeJobs, latestRequests } = getDashboardData(bookings.data)
 

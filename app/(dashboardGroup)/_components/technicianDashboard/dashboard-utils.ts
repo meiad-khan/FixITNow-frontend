@@ -1,5 +1,3 @@
-// (dashboardGroup)/_components/technicianDashboard/dashboard-utils.ts
-// adjust to your actual path
 
 import { TechnicianBooking } from "@/lib/technician/type";
 
@@ -19,23 +17,25 @@ export function formatTaka(amount: number) {
 }
 
 export function getDashboardData(bookings: TechnicianBooking[]) {
+
   const pendingRequests = bookings
     .filter((b) => b.status === "REQUESTED")
-    .sort((a, b) => +new Date(a.scheduledAt) - +new Date(b.scheduledAt));
+    .sort((a, b) => +new Date(a.scheduledAt) - +new Date(b.scheduledAt)) || [];
 
-  const upcomingJobs = bookings
-    .filter((b) => b.status === "ACCEPTED")
-    // .filter((b) => new Date(b.scheduledAt) >= new Date()) // enable once real data is future-dated
-    .sort((a, b) => +new Date(a.scheduledAt) - +new Date(b.scheduledAt));
+  const upcomingJobs =
+    bookings
+      .filter((b) => b.status === "ACCEPTED")
+      // .filter((b) => new Date(b.scheduledAt) >= new Date()) // enable once real data is future-dated
+      .sort((a, b) => +new Date(a.scheduledAt) - +new Date(b.scheduledAt)) || []
 
   const totalEarnings = bookings
     .filter((b) => b.status === "COMPLETED")
-    .reduce((sum, b) => sum + Number(b.price), 0);
+    .reduce((sum, b) => sum + Number(b.price), 0) || 0;
 
   return {
     stats: {
-      pendingCount: pendingRequests.length,
-      upcomingCount: upcomingJobs.length,
+      pendingCount: pendingRequests.length || 0,
+      upcomingCount: upcomingJobs.length || 0,
       totalEarnings,
     },
     nextThreeJobs: upcomingJobs.slice(0, 3),

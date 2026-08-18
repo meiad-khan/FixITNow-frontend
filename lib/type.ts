@@ -25,7 +25,7 @@ export interface IUser {
   name: string
   email: string
   phone: string | null
-  role: "TECHNICIAN" | "USER" | "ADMIN"
+  role: "TECHNICIAN" | "CUSTOMER" | "ADMIN"
   userStatus: "UNBAN" | "BANNED"
   createdAt: string
   updatedAt: string
@@ -136,6 +136,9 @@ export interface Booking {
   createdAt: string 
   updatedAt: string 
   service: ServiceDetails
+  user: {
+    name:string
+  }
 }
 
 export interface BookingResponse {

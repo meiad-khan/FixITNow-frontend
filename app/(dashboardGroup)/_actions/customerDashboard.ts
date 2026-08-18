@@ -51,7 +51,7 @@ export const updateProfile = async (formData: FormData) => {
     phone: formData.get("phone") || null,
   }
 
-  console.log("payload is ", payload);
+  // console.log("payload is ", payload);
 
   const res = await fetch(
     `${process.env.BACKEND_API_URL}/api/auth/update-profile`,

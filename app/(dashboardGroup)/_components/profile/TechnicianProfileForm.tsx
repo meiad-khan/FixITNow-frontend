@@ -32,7 +32,7 @@ export function TechnicianProfileForm({ profile }: TechnicianProfileFormProps) {
 
   const [name, setName] = useState(profile.name)
   const [phone, setPhone] = useState(profile.phone ?? "")
-  const [bio, setBio] = useState(profile.technicianProfile.bio)
+  const [bio, setBio] = useState(profile.technicianProfile.bio || "")
   const [location, setLocation] = useState(profile.technicianProfile.location)
   const [experienceYears, setExperienceYears] = useState(
     profile.technicianProfile.experienceYears
