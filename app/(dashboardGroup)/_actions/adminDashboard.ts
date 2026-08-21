@@ -20,6 +20,13 @@ export const getAllUsers = async ({ query }: { query?: UserQuery }) => {
   if (query && query.role) {
     params.set("role",query.role)
   }
+  if (query?.page) {
+    params.set("page", query.page)
+  }
+
+  if (query?.limit) {
+    params.set("limit", query.limit)
+  }
 
   const cookieStore = await cookies()
     const accessToken = cookieStore.get("accessToken")?.value
@@ -41,6 +48,7 @@ export const getAllUsers = async ({ query }: { query?: UserQuery }) => {
     const result = await res.json()
     return result
 }
+
 
 export const getUsersStats = async () => {
   // console.log("query is ", query)

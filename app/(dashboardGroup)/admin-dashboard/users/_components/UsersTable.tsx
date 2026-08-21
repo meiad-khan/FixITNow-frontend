@@ -1,41 +1,35 @@
 import React, { Suspense } from "react"
-import {
-  Search,
-  Users,
-  UserCheck,
-  Wrench,
-  ShieldCheck,
-  Ban,
-  CheckCircle2,
-  MoreHorizontal,
-} from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 import SearchBar from "./SearchBar"
 import FilterByRole from "./FilterByRole"
 import Pagination from "./Pagination"
 import UserStats from "./UserStats"
-import { getUsersStats } from "@/app/(dashboardGroup)/_actions/adminDashboard"
+import {
+  getAllUsers,
+  getUsersStats,
+} from "@/app/(dashboardGroup)/_actions/adminDashboard"
 import TableBodySkeleton from "./TableBodySkeleton"
 import UsersTableContent from "./UsersTableContent"
-
 
 export default async function UsersTable({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-  }) {
+}) {
   const query = await searchParams
-  const statsResponse = await getUsersStats();
-  // console.log("stat response ", statsResponse);
-  const stats = statsResponse.data.stats ?? {};
+
+  // console.log("QUERY:", query)
+ 
+  const [statsResponse, usersResponse] = await Promise.all([
+    getUsersStats(),
+    getAllUsers({ query }),
+  ])
+
+  const stats = statsResponse.data.stats ?? {}
+  const users = usersResponse.data.data ?? []
+  const meta = usersResponse.data.meta ?? {}
 
   return (
     <div className="space-y-6">
@@ -53,12 +47,6 @@ export default async function UsersTable({
                 Manage all registered users on the platform.
               </p>
             </div>
-
-            {/* <DynamicSearchedResultCount/>
-             */}
-            {/* <div className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-              0 users found
-            </div> */}
           </div>
         </CardHeader>
 
@@ -101,12 +89,13 @@ export default async function UsersTable({
                 </tr>
               </thead>
               <Suspense fallback={<TableBodySkeleton />}>
-                <UsersTableContent query={query} />
+                <UsersTableContent users={users} />
               </Suspense>
             </table>
           </div>
-          {/* Pagination */}
-          <Pagination />
+
+          
+          <Pagination meta={meta} />
         </CardContent>
       </Card>
     </div>

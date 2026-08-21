@@ -1,16 +1,10 @@
-import { getAllUsers } from "@/app/(dashboardGroup)/_actions/adminDashboard"
 import TableBody from "./TableBody"
+import { IUser } from "@/lib/type"
 
 type Props = {
-  query: {
-    [key: string]: string | string[] | undefined
-  }
+  users: IUser[]
 }
 
-export default async function UsersTableContent({ query }: Props) {
-  const usersResponse = await getAllUsers({ query })
-
-  const users = usersResponse.data.data ?? []
-
+export default function UsersTableContent({ users }: Props) {
   return <TableBody users={users} />
 }

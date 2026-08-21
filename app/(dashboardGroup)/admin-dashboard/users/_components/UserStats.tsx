@@ -1,5 +1,4 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { IUser } from '@/lib/type'
 import { ShieldCheck, UserCheck, Users, Wrench } from 'lucide-react'
 import React from 'react'
 
