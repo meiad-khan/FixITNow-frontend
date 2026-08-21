@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useRef } from "react"
+import { useRef, useTransition } from "react"
 
 export default function ServiceFilter({
   technicianLocation,
@@ -20,11 +20,12 @@ export default function ServiceFilter({
    const pathname = usePathname()
    const searchParams = useSearchParams()
   const router = useRouter()
+   const [isPending, startTransition] = useTransition()
   
    const debouncedReference = useRef<ReturnType<typeof setTimeout> | null>(null)
    
    const updateParam = (key: string, value: string) => {
-     console.log("key is ", key, "value is ", value)
+    //  console.log("key is ", key, "value is ", value)
 
      if (debouncedReference.current) {
        clearTimeout(debouncedReference.current)
@@ -36,8 +37,13 @@ export default function ServiceFilter({
        } else {
          params.set(key, value)
        }
-       router.replace(`${pathname}?${params.toString()}`)
-     }, 500)
+       params.set("page", "1")
+       startTransition(() => {
+         router.replace(`${pathname}?${params.toString()}`, {
+           scroll: false,
+         })
+       })
+     },100)
    }
   
   
@@ -55,7 +61,11 @@ export default function ServiceFilter({
       params.set("minPrice", values[0].toString())
       params.set("maxPrice", values[1].toString())
 
-      router.replace(`${pathname}?${params.toString()}`)
+       startTransition(() => {
+         router.replace(`${pathname}?${params.toString()}`, {
+           scroll: false,
+         })
+       })
     }, 500)
   }
   
@@ -74,7 +84,7 @@ export default function ServiceFilter({
           </div>
 
           <Button variant="ghost" size="sm" className="h-8 px-2 text-xs"
-          onClick={()=>router.replace(`${pathname}`)}
+          onClick={()=>router.replace(`${pathname}`,{scroll:false})}
           >
             <RotateCcw className="mr-1.5 size-3.5" />
             Reset

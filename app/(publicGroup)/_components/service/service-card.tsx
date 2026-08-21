@@ -3,22 +3,9 @@ import { ArrowRight, BadgeCheck, UserRound } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Service } from "../../service/_config/type"
 
-export interface Service {
-  id: string
-  serviceName: string
-  description: string
-  basePrice: string
-  status: string
-  category: {
-    categoryName: string
-  }
-  technician: {
-    user: {
-      name: string
-    }
-  }
-}
+
 
 interface ServiceCardProps {
   service: Service

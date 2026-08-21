@@ -1,19 +1,10 @@
-import { getAllServices } from "../../_actions/serviceActions/serviceActions";
-import { Service, ServiceCard } from "./service-card"
+import { Service, ServiceResponse } from "../../service/_config/type"
+import { ServiceCard } from "./service-card"
 
-export async function ServiceResults({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
-  
-  const query = await searchParams;
-
-  const result = await getAllServices({ query });
-
+export async function ServiceResults({ result }: { result: ServiceResponse }) {
   // console.log("service is ", result);
 
-  if (!result.success || !result.data?.length) {
+  if (!result?.success||!result.data?.length) {
     return (
       <div className="flex min-h-100 items-center justify-center rounded-xl border bg-background">
         <div className="text-center">
@@ -28,7 +19,7 @@ export async function ServiceResults({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 min-h-200">
       {/* Service count */}
       <div className="text-sm text-muted-foreground">
         {result.meta?.total ?? result.data.length} services available

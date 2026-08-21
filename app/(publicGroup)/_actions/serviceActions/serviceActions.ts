@@ -42,6 +42,13 @@ export const getAllServices = async ({
   if (query && query.sortOrder) {
     params.set("sortOrder", query.sortOrder);
   }
+   if (query?.page) {
+     params.set("page", query.page)
+   }
+
+   if (query?.limit) {
+     params.set("limit", query.limit)
+   }
   
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/services?${params.toString()}`, {
     next: {

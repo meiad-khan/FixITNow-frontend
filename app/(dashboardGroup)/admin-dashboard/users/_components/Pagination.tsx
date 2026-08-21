@@ -4,16 +4,10 @@ import React, { useTransition } from "react"
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-interface MetaProps {
-  page: number
-  limit: number
-  total: number
-  totalPages: number
-}
+import { MetaData } from "../_config/type"
 
 interface PaginationProps {
-  meta: MetaProps
+  meta: MetaData
 }
 
 const Pagination = ({ meta }: PaginationProps) => {

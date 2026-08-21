@@ -3,12 +3,21 @@ import { Suspense } from "react"
 import ServiceSearchCard from "./serviceSearch"
 import { ServiceResults } from "./service-results"
 import ServiceSkeleton from "./service-skeleton"
+import Pagination from "@/app/(dashboardGroup)/admin-dashboard/users/_components/Pagination"
+import { getAllServices } from "../../_actions/serviceActions/serviceActions"
 
-export function ServiceContent({
+export async function ServiceContent({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
+  }) {
+  
+  const query = await searchParams;
+  
+  const result = await getAllServices({ query });
+  const meta = result.meta ?? {};
+ 
+  
   return (
     <div className="w-full space-y-4">
       {/* Heading + Search */}
@@ -28,8 +37,9 @@ export function ServiceContent({
 
       {/* Only dynamic content */}
       <Suspense fallback={<ServiceSkeleton />}>
-        <ServiceResults searchParams={searchParams} />
+        <ServiceResults result={result} />
       </Suspense>
+      <Pagination meta={meta} />
     </div>
   )
 }
