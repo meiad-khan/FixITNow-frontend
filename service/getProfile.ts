@@ -23,6 +23,6 @@ export const getProfile = async () => {
     },
   })
   const result = await res.json();
-  console.log("result is ",result, result.data)
+  // console.log("result is from getprofile",result, result.data)
   return result;
 }

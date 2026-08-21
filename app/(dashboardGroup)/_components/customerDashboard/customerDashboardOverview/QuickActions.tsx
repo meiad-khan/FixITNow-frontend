@@ -24,7 +24,7 @@ const actions = [
       "bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
     hoverClass:
       "hover:border-amber-300 hover:bg-amber-50/60 dark:hover:border-amber-500/30 dark:hover:bg-amber-500/5",
-    redirectTo: "/dashboard/my-bookings",
+    redirectTo: "/dashboard/bookings",
   },
   {
     title: "Payment History",
@@ -34,7 +34,7 @@ const actions = [
       "bg-blue-100 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400",
     hoverClass:
       "hover:border-blue-300 hover:bg-blue-50/60 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/5",
-    redirectTo: "/payment-history",
+    redirectTo: "/dashboard/payments",
   },
 ]
 

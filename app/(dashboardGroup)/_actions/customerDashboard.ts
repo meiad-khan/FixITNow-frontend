@@ -13,11 +13,7 @@ export const getMyBookings = async () => {
     headers: {
       Cookie: `accessToken=${accessToken}`,
     },
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 2,
-      tags: ["customer-bookings"],
-    },
+   cache:"no-cache"
   })
   const result = await res.json()
   return result
@@ -76,4 +72,43 @@ export const updateProfile = async (formData: FormData) => {
   revalidatePath("/dashboard/profile");
 
   return result
+}
+
+
+export const makePayment = async (id:string) => {  
+  const cookieStore = await cookies();
+   const accessToken = cookieStore.get("accessToken")?.value
+  
+  if (!accessToken) {
+    return {
+      success: false,
+      message:"You are not logged in!"
+    }
+  }
+  
+   // console.log("access token is ", accessToken);
+  const payload = {
+    bookingId:id,
+  }
+  console.log("Payload is ",payload)
+   const res = await fetch(`${process.env.BACKEND_API_URL}/api/payment/init`, {
+     method: "POST",
+     headers: {
+       "Content-type": "application/json",
+       Cookie: `accessToken=${accessToken}`,
+     },
+     body:JSON.stringify(payload)
+   })
+  const result = await res.json();
+  revalidatePath("/dashboard");
+  console.log("payment result is ", result);
+   return result
+}
+
+export const getPaymentDetails = async (tran_id: string) => {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/payment/success/${tran_id}`, {
+    cache: "no-cache"
+  });
+  const result = await res.json();
+  return result;
 }

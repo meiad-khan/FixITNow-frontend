@@ -33,6 +33,8 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import type { BookingStatus } from "./BookingStatusBadge"
+import { makePayment } from "../../_actions/customerDashboard"
+import { toast } from "sonner"
 
 type UserRole = "CUSTOMER" | "TECHNICIAN"
 
@@ -58,23 +60,34 @@ export default function BookingActions({
 
   const canCustomerCancel = ["REQUESTED", "ACCEPTED", "PAID"].includes(status)
 
-  const handlePay = () => {
-    router.push(`/payment/${bookingId}`)
+   const handlePay = async() => {
+    try {
+      const result = await makePayment(bookingId);
+      if (result.success) {
+        router.push(result.data.paymentUrl);
+        toast.success("Payment successfull")
+      } else {
+        toast.error("Payment failed")
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+
   const handleSubmitReview = () => {
-    // TODO: call review API with { bookingId, rating, comment }
     console.log("Submit review:", { bookingId, rating, comment })
     setReviewOpen(false)
     setRating(0)
     setComment("")
   }
 
+
   const handleConfirmCancel = () => {
-    // TODO: call cancel API with { bookingId }
-    console.log("Cancel booking:", bookingId)
+    // console.log("Cancel booking:", bookingId)
     setCancelOpen(false)
   }
+
 
   const handleAction = (action: string) => {
     console.log(`Booking action: ${action}`)
@@ -190,9 +203,8 @@ export default function BookingActions({
     )
   }
 
-  /* =========================
-     TECHNICIAN
-  ========================= */
+
+  /*  TECHNICIAN */
 
   switch (status) {
     case "REQUESTED":

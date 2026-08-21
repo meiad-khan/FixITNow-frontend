@@ -47,15 +47,15 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
   ],
   ADMIN: [
     { title: "Dashboard", href: "/admin-dashboard", icon: LayoutDashboard },
-    { title: "Users", href: "/admin-dashboard/admin/users", icon: Users },
+    { title: "Users", href: "/admin-dashboard/users", icon: Users },
     {
       title: "Categories",
-      href: "/admin-dashboard/admin/categories",
+      href: "/admin-dashboard/categories",
       icon: Tags,
     },
     {
       title: "Create Services",
-      href: "/admin-dashboard/admin/services",
+      href: "/admin-dashboard/services",
       icon: PackagePlus,
     },
   ],
