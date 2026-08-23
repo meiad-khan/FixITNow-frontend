@@ -34,7 +34,7 @@ export default function TechnicianFilter({
       } else {
         params.set(key, value)
       }
-      router.replace(`${pathname}?${params.toString()}`)
+      router.replace(`${pathname}?${params.toString()}`,{scroll:false})
     }, 500)
   }
 
@@ -50,7 +50,7 @@ export default function TechnicianFilter({
 
       params.set("rating", values[0].toString())
 
-      router.replace(`${pathname}?${params.toString()}`)
+      router.replace(`${pathname}?${params.toString()}`,{scroll:false})
     }, 500)
   }
 
@@ -69,7 +69,7 @@ export default function TechnicianFilter({
       params.set("minExperience", values[0].toString())
       params.set("maxExperience", values[1].toString())
 
-      router.replace(`${pathname}?${params.toString()}`)
+      router.replace(`${pathname}?${params.toString()}`,{scroll:false})
     }, 500)
   }
 
@@ -88,7 +88,7 @@ export default function TechnicianFilter({
           </div>
 
           <Button variant="ghost" size="sm" className="h-8 px-2 text-xs"
-          onClick={()=>router.replace(`${pathname}`)}
+          onClick={()=>router.replace(`${pathname}`,{scroll:false})}
           >
             <RotateCcw className="mr-1.5 size-3.5" />
             Reset

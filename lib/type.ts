@@ -1,3 +1,5 @@
+import { MetaData } from "@/app/(dashboardGroup)/admin-dashboard/users/_config/type"
+
 export interface IAvailability {
   monday?: string[]
   tuesday?: string[]
@@ -6,6 +8,39 @@ export interface IAvailability {
   friday?: string[]
   saturday?: string[]
   sunday?: string[]
+}
+
+export interface ICategory {
+  categoryName: string
+}
+
+export interface IService {
+  serviceName: string
+  category: ICategory
+}
+
+export interface Data {
+  id: string
+  profilePhoto: string
+  bio: string
+  experienceYears: number
+  location: string
+  availability: IAvailability
+  userId: string
+  createdAt: string
+  updatedAt: string
+  user: {
+    name: string
+  }
+  services: IService[] // Fixed: must be an array type
+}
+
+export interface TechnicianResponse {
+  success: boolean // Fixed: use boolean primitive for dynamic responses
+  statusCode: number
+  message: string
+  data: Data[]
+  meta: MetaData
 }
 
 export interface TechnicianProfile {
@@ -68,13 +103,16 @@ export type Review = {
 
 export type CategoryStatus = "AVAILABLE" | "UNAVAILABLE"
 
-export interface Category {
+export type Category = {
   id: string
   categoryName: string
   description: string
-  status: CategoryStatus | string
+  status: "AVAILABLE" | "UNAVAILABLE"
   createdAt: string
   updatedAt: string
+  _count: {
+    services: number
+  }
 }
 
 export interface ApiResponse<T> {
@@ -170,6 +208,7 @@ export interface PaymentBookingInfo {
   service: PaymentServiceInfo
 }
 
+
 export interface PaymentRecord {
   id: string
   transactionId: string
@@ -183,6 +222,7 @@ export interface PaymentRecord {
   updatedAt: string
   booking: PaymentBookingInfo
 }
+
 
 export interface PaymentHistoryResponse {
   success: boolean

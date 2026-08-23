@@ -11,39 +11,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
+import { Data } from "@/lib/type"
 
-export interface TechnicianAvailability {
-  [day: string]: string[]
-}
-
-export interface TechnicianService {
-  serviceName: string
-  category: {
-    categoryName: string
-  }
-}
-
-export interface Technician {
-  id: string
-  profilePhoto: string | null
-  bio: string
-  experienceYears: number
-  location: string
-  availability: TechnicianAvailability
-  userId: string
-  createdAt: string
-  updatedAt: string
-  user: {
-    name: string
-  }
-  services: TechnicianService[]
-}
 
 function formatDay(day: string) {
   return day.charAt(0).toUpperCase() + day.slice(1)
 }
 
-export function TechnicianCard({ technician }: { technician: Technician }) {
+export function TechnicianCard({ technician }: { technician: Data }) {
   const availabilityEntries = Object.entries(technician.availability ?? {})
 
   const displayedServices = technician.services.slice(0, 3)

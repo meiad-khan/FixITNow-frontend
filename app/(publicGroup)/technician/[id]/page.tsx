@@ -17,6 +17,7 @@ import TechnicianServices from "../../_components/technician/TechnicianServices"
 import TechnicianAvailability from "../../_components/technician/TechnicianAvailability"
 import TechnicianReviews from "../../_components/technician/TechnicianReviews"
 import { Review } from "@/lib/type"
+import CreateBookingModal from "../../_components/technician/CreateBookingModal"
 
 
 export default async function TechnicianDetailsPage({
@@ -43,7 +44,7 @@ export default async function TechnicianDetailsPage({
  
   return (
     <div className="min-h-screen bg-muted/30">
-     {/* Hero */}
+      {/* Hero */}
       <section className="border-b bg-background">
         <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -100,10 +101,12 @@ export default async function TechnicianDetailsPage({
             </div>
 
             {/* CTA */}
-            <Button size="lg" className="w-full md:w-auto">
-              <CalendarDays className="mr-2 size-4" />
-              Book Now
-            </Button>
+            <CreateBookingModal
+              services={technician.services}
+              availability={technician.availability}
+              technicianName={technician.user.name}
+            />
+            
           </div>
         </div>
       </section>
@@ -111,7 +114,6 @@ export default async function TechnicianDetailsPage({
       {/* content */}
       <section className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-          
           {/* left side */}
           <div className="space-y-8">
             {/* About */}
@@ -143,11 +145,10 @@ export default async function TechnicianDetailsPage({
 
             {/* Reviews */}
             <TechnicianReviews reviews={reviews} />
-            
           </div>
 
           {/* Booking */}
-          
+
           <aside className="lg:sticky lg:top-24 lg:h-fit">
             <Card className="overflow-hidden shadow-sm">
               <CardHeader className="border-b bg-background">
@@ -165,6 +166,7 @@ export default async function TechnicianDetailsPage({
                 <TechnicianBooking
                   services={technician.services}
                   availability={technician.availability}
+                  technicianName={technician.user.name}
                 />
               </CardContent>
             </Card>

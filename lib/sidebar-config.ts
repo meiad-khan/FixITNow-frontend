@@ -50,12 +50,12 @@ export const sidebarItems: Record<UserRole, SidebarItem[]> = {
     { title: "Users", href: "/admin-dashboard/users", icon: Users },
     {
       title: "Categories",
-      href: "/admin-dashboard/categories",
+      href: "/admin-dashboard/category",
       icon: Tags,
     },
     {
       title: "Create Services",
-      href: "/admin-dashboard/services",
+      href: "/admin-dashboard/create-service",
       icon: PackagePlus,
     },
   ],

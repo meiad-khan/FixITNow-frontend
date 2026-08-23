@@ -2,9 +2,8 @@ import { Button } from "@/components/ui/button"
 import { ServiceContent } from "../_components/service/service-content"
 import ServiceFilter from "../_components/service/service-filter"
 import { getAllTechnician } from "../_actions/technicianActions/technicianActions"
-import { Technician } from "../_components/technician/technician-card"
 import { getAllCategory } from "../_actions/serviceActions/serviceActions"
-import { Category } from "@/lib/type"
+import { Category, Data } from "@/lib/type"
 
 export default async function ServicePage({
   searchParams,
@@ -13,9 +12,9 @@ export default async function ServicePage({
   }) {
   
   const technician = await getAllTechnician({})
-  const technicianLocation: string[] = [...new Set(
-    (technician.data as Technician[]).map((tech) => tech.location)
-  )];
+  const technicianLocation: string[] = [
+    ...new Set((technician.data as Data[]).map((tech) => tech.location)),
+  ]
 
   const categories = await getAllCategory();
   // console.log("categories is ", categories);

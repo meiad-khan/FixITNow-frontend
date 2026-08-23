@@ -62,7 +62,6 @@ export const getAllServices = async ({
 
 export const getAllCategory = async () => {
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/categories`, {
-    cache: "force-cache",
     next: {
       revalidate: 60 * 60 * 24 * 2, //2 days
       tags: ["categories"]
@@ -70,4 +69,11 @@ export const getAllCategory = async () => {
   });
   const result = await res.json();
   return result;
+}
+
+export const getSingleService = async (id: string) => {
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/services/${id}`);
+  const result = await res.json();
+  return result;
+
 }

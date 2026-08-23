@@ -39,7 +39,7 @@ export async function ServiceContent({
       <Suspense fallback={<ServiceSkeleton />}>
         <ServiceResults result={result} />
       </Suspense>
-      <Pagination meta={meta} />
+      <Pagination meta={meta} field={"Services"} />
     </div>
   )
 }

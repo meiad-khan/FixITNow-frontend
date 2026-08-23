@@ -95,7 +95,7 @@ export default async function UsersTable({
           </div>
 
           
-          <Pagination meta={meta} />
+          <Pagination meta={meta} field="Users"/>
         </CardContent>
       </Card>
     </div>

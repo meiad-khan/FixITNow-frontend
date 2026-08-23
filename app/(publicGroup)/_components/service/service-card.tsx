@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Service } from "../../service/_config/type"
+import Link from "next/link"
 
 
 
@@ -81,9 +82,11 @@ export function ServiceCard({ service }: ServiceCardProps) {
       </CardContent>
 
       <CardFooter className="pt-0">
-        <Button className="w-full gap-2" variant="outline">
-          View Service
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+        <Button asChild variant="outline" className="w-full gap-2">
+          <Link href={`/service/${service.id}`}>
+            View Service
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </Button>
       </CardFooter>
     </Card>

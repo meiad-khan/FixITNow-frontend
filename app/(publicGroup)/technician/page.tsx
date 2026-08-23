@@ -2,9 +2,8 @@ import { Button } from "@/components/ui/button"
 import { TechnicianContent } from "../_components/technician/technician-content"
 import TechnicianFilter from "../_components/technician/technician-filter"
 import { getAllTechnician } from "../_actions/technicianActions/technicianActions"
-import { Technician } from "../_components/technician/technician-card"
 import { getAllCategory } from "../_actions/serviceActions/serviceActions"
-import { Category } from "@/lib/type"
+import { Category, Data } from "@/lib/type"
 
 export default async function TechnicianPage({
   searchParams,
@@ -16,16 +15,15 @@ export default async function TechnicianPage({
   // console.log("searchTerm is ", searchTerm);
 
   const technician = await getAllTechnician({})
-    const technicianLocation: string[] = [...new Set(
-      (technician.data as Technician[]).map((tech) => tech.location)
-    )];
+    const technicianLocation: string[] = [
+      ...new Set((technician.data as Data[]).map((tech) => tech.location)),
+    ]
   
     const categories = await getAllCategory();
     // console.log("categories is ", categories);
     const categoryNames = [...new Set(
       (categories.data as Category[]).map((category)=>category.categoryName)
     )]
-
 
   
   return (

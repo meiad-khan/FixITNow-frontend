@@ -6,12 +6,8 @@ import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { MetaData } from "../_config/type"
 
-interface PaginationProps {
-  meta: MetaData
-}
 
-const Pagination = ({ meta }: PaginationProps) => {
-
+const Pagination = ({ meta, field }: { meta: MetaData; field: string }) => {
   // console.log("meta is ",meta)
 
   const router = useRouter()
@@ -52,7 +48,7 @@ const Pagination = ({ meta }: PaginationProps) => {
     params.set("page", newPage.toString())
 
     startTransition(() => {
-      router.push(`${pathname}?${params.toString()}`,{scroll:false})
+      router.push(`${pathname}?${params.toString()}`, { scroll: false })
     })
   }
 
@@ -61,7 +57,7 @@ const Pagination = ({ meta }: PaginationProps) => {
       <p className="text-sm text-muted-foreground">
         Showing <span className="font-medium text-foreground">{startItem}</span>{" "}
         to <span className="font-medium text-foreground">{endItem}</span> of{" "}
-        <span className="font-medium text-foreground">{total}</span> users
+        <span className="font-medium text-foreground">{total}</span> {field}
       </p>
 
       <div className="flex items-center gap-2">

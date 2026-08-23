@@ -27,7 +27,7 @@ export default function TechnicianSearch() {
       } else {
         params.delete("searchTerm")
       }
-      router.replace(`${pathname}?${params.toString()}`);
+      router.replace(`${pathname}?${params.toString()}`,{scroll:false});
     },500)
 
     

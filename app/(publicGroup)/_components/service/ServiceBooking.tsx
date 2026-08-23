@@ -10,7 +10,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 
 import {
@@ -24,27 +23,23 @@ import {
 import { createBooking } from "../../_actions/technicianActions/bookingActions"
 import Link from "next/link"
 
-export type Service = {
-  id: string
+type ServiceBookingProps = {
+  serviceId: string
   serviceName: string
   basePrice: string
-}
-
-type TechnicianBookingProps = {
-  services: Service[]
   availability: Record<string, string[]>
   technicianName: string
 }
 
-export default function TechnicianBooking({
-  services,
+export default function ServiceBooking({
+  serviceId,
+  serviceName,
+  basePrice,
   availability,
   technicianName,
-}: TechnicianBookingProps) {
+}: ServiceBookingProps) {
 
   const [isPending, startTransition] = useTransition()
-
-  const [selectedService, setSelectedService] = useState(services[0]?.id ?? "")
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>()
 
@@ -56,9 +51,9 @@ export default function TechnicianBooking({
 
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false)
 
-  const selectedServiceData = services.find(
-    (service) => service.id === selectedService
-  )
+  /* ============================================================
+      GET AVAILABLE TIME SLOTS
+  ============================================================ */
 
   const getAvailableTimeSlots = (date: Date) => {
     const day = date
@@ -79,16 +74,20 @@ export default function TechnicianBooking({
       const [start, end] = range.split("-")
 
       const [startHour, startMinute] = start.split(":").map(Number)
+
       const [endHour, endMinute] = end.split(":").map(Number)
 
       let currentMinutes = startHour * 60 + startMinute
+
       const endMinutes = endHour * 60 + endMinute
 
       while (currentMinutes < endMinutes) {
         const hour = Math.floor(currentMinutes / 60)
+
         const minute = currentMinutes % 60
 
         const formattedHour = hour % 12 || 12
+
         const period = hour >= 12 ? "PM" : "AM"
 
         slots.push(
@@ -105,6 +104,9 @@ export default function TechnicianBooking({
     return slots
   }
 
+  /* ============================================================
+      CREATE ISO DATETIME
+  ============================================================ */
 
   const createScheduledAt = (date: Date, time: string) => {
     const [timeValue, period] = time.split(" ")
@@ -126,21 +128,20 @@ export default function TechnicianBooking({
     return scheduledDate.toISOString()
   }
 
+  /* ============================================================
+      CONFIRM BOOKING
+  ============================================================ */
+
   const handleConfirmBooking = () => {
     setError("")
 
-    if (!selectedService) {
-      setError("Please select a service")
-      return
-    }
-
     if (!selectedDate) {
-      setError("Please select a booking date")
+      setError("Please select a booking date.")
       return
     }
 
     if (!selectedTime) {
-      setError("Please select an available time")
+      setError("Please select an available time.")
       return
     }
 
@@ -148,13 +149,14 @@ export default function TechnicianBooking({
 
     startTransition(async () => {
       const result = await createBooking({
-        serviceId: selectedService,
+        serviceId,
         scheduledAt,
         customerNote: customerNote.trim(),
       })
 
       if (!result.success) {
-        setError(result.message || "Failed to create booking")
+        setError(result.message || "Failed to create booking.")
+
         return
       }
 
@@ -166,54 +168,39 @@ export default function TechnicianBooking({
     ? getAvailableTimeSlots(selectedDate)
     : []
 
-  
   return (
     <>
       <div className="space-y-6">
         {/* =====================================================
-            SERVICE
+            FIXED SERVICE
         ====================================================== */}
-        <div className="space-y-3">
-          <label className="text-sm font-medium">Select Service</label>
 
-          <RadioGroup
-            value={selectedService}
-            onValueChange={setSelectedService}
-            className="space-y-2"
-          >
-            {services.map((service) => (
-              <label
-                key={service.id}
-                htmlFor={service.id}
-                className="flex cursor-pointer items-center justify-between gap-3 rounded-lg border p-4 transition-colors hover:bg-muted/50 has-data-[state=checked]:border-primary"
-              >
-                <div className="flex min-w-0 items-center gap-3">
-                  <RadioGroupItem value={service.id} id={service.id} />
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Selected Service</label>
 
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                    <Wrench className="size-4 text-primary" />
-                  </div>
+          <div className="flex items-center justify-between gap-3 rounded-lg border bg-muted/30 p-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                <Wrench className="size-4 text-primary" />
+              </div>
 
-                  <div className="min-w-0">
-                    <p className="font-medium">{service.serviceName}</p>
+              <div className="min-w-0">
+                <p className="font-medium">{serviceName}</p>
 
-                    <p className="text-xs text-muted-foreground">
-                      Professional service
-                    </p>
-                  </div>
-                </div>
+                <p className="text-xs text-muted-foreground">
+                  Professional service
+                </p>
+              </div>
+            </div>
 
-                <span className="shrink-0 font-semibold">
-                  ৳{service.basePrice}
-                </span>
-              </label>
-            ))}
-          </RadioGroup>
+            <span className="shrink-0 font-semibold">৳{basePrice}</span>
+          </div>
         </div>
 
         {/* =====================================================
             DATE
         ====================================================== */}
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Select Date</label>
 
@@ -245,8 +232,15 @@ export default function TechnicianBooking({
                 onSelect={(date) => {
                   setSelectedDate(date)
                   setSelectedTime("")
+                  setError("")
                 }}
-                disabled={(date) => date < new Date()}
+                disabled={(date) => {
+                  const today = new Date()
+
+                  today.setHours(0, 0, 0, 0)
+
+                  return date < today
+                }}
               />
             </PopoverContent>
           </Popover>
@@ -255,6 +249,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             TIME
         ====================================================== */}
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Available Time</label>
 
@@ -275,7 +270,7 @@ export default function TechnicianBooking({
               <p className="text-sm font-medium">No availability</p>
 
               <p className="mt-1 text-xs text-muted-foreground">
-                This technician is not available on the selected day.
+                The technician is not available on this day.
               </p>
             </div>
           ) : (
@@ -286,7 +281,10 @@ export default function TechnicianBooking({
                   type="button"
                   variant={selectedTime === time ? "default" : "outline"}
                   className="h-10"
-                  onClick={() => setSelectedTime(time)}
+                  onClick={() => {
+                    setSelectedTime(time)
+                    setError("")
+                  }}
                 >
                   {time}
                 </Button>
@@ -296,8 +294,9 @@ export default function TechnicianBooking({
         </div>
 
         {/* =====================================================
-            NOTE
+            CUSTOMER NOTE
         ====================================================== */}
+
         <div className="space-y-2">
           <label htmlFor="customer-note" className="text-sm font-medium">
             Note for Technician
@@ -315,6 +314,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             ERROR
         ====================================================== */}
+
         {error && (
           <p className="text-sm font-medium text-destructive">{error}</p>
         )}
@@ -322,12 +322,11 @@ export default function TechnicianBooking({
         {/* =====================================================
             SUMMARY
         ====================================================== */}
+
         <div className="rounded-lg bg-muted/50 p-4">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium">
-                {selectedServiceData?.serviceName ?? "No service selected"}
-              </p>
+              <p className="text-sm font-medium">{serviceName}</p>
 
               <p className="text-xs text-muted-foreground">
                 {selectedDate && selectedTime
@@ -336,20 +335,19 @@ export default function TechnicianBooking({
               </p>
             </div>
 
-            <span className="font-semibold">
-              {selectedServiceData ? `৳${selectedServiceData.basePrice}` : "—"}
-            </span>
+            <span className="font-semibold">৳{basePrice}</span>
           </div>
         </div>
 
         {/* =====================================================
             CONFIRM BOOKING
         ====================================================== */}
+
         <Button
           size="lg"
           className="w-full"
           onClick={handleConfirmBooking}
-          disabled={isPending}
+          disabled={isPending || !selectedDate || !selectedTime}
         >
           {isPending ? "Creating Booking..." : "Confirm Booking"}
         </Button>
@@ -358,6 +356,7 @@ export default function TechnicianBooking({
       {/* =====================================================
           SUCCESS DIALOG
       ====================================================== */}
+
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -376,7 +375,7 @@ export default function TechnicianBooking({
             </DialogDescription>
           </DialogHeader>
 
-          <DialogFooter className="space-x-2 sm:gap-0">
+          <DialogFooter className="gap-2 sm:gap-0">
             <Button
               variant="outline"
               onClick={() => setIsSuccessDialogOpen(false)}
@@ -384,7 +383,7 @@ export default function TechnicianBooking({
               Close
             </Button>
 
-            <Button asChild >
+            <Button asChild>
               <Link href={"/dashboard/bookings"}>Go to My Bookings</Link>
             </Button>
           </DialogFooter>
