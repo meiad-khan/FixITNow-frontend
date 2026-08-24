@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, BriefcaseBusiness, MapPin, Star } from "lucide-react"
 
@@ -7,12 +6,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getAllTechnician } from "../../_actions/technicianActions/technicianActions"
-import { Technician } from "../technician/technician-card"
+import { Data } from "@/lib/type"
 
 export default async function FeaturedTechnicians() {
 
   const technicians = await getAllTechnician({})
-  const experiencedTechnician = (technicians.data as Technician[]).filter((tech) => tech.experienceYears > 5);
+  const experiencedTechnician = (technicians.data as Data[]).filter((tech) => tech.experienceYears > 5);
 
   return (
     <section className="bg-muted/40 py-16 sm:py-20">
