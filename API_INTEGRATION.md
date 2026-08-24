@@ -26,6 +26,6 @@ This document describes the backend API endpoints integrated into the FixItNow f
 | `PATCH /api/bookings/:id` | `updateBookingStatus.ts → updateBookingStatus` | Technician Dashboard |
 | `POST /api/payment/init` | `customerDashboard.ts → makePayment` | Customer Dashboard / Pay Button |
 | `GET /api/payment` | `customerDashboard.ts → getMyPayments` | `/dashboard/payments` |
-| `GET /payments/:id` | `customerDashboard.ts → getPaymentDetails` | `/dashboard/payment-success` |
+| `GET /api/payments/:id` | `customerDashboard.ts → getPaymentDetails` | `/dashboard/payment-success` |
 | `POST /api/reviews` | `customerDashboard.ts → makeReview` | `/dashboard` |
 
