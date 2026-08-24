@@ -20,14 +20,15 @@ export default function HomeServiceCard({ services }: { services: Service[] }) {
       {services.map((service) => (
         <Card
           key={service.name}
-          className="group overflow-hidden py-0 transition-shadow cursor-pointer hover:shadow-lg"
-          onClick={()=>router.push(`/service?searchTerm=${service.name}`)}
+          className="group cursor-pointer overflow-hidden py-0 transition-shadow hover:shadow-lg"
+          onClick={() => router.push(`/service?searchTerm=${service.name}`)}
         >
-          <div className="relative aspect-[16/9] overflow-hidden">
+          <div className="relative aspect-[16/9] w-full overflow-hidden">
             <Image
               src={service.image}
               alt={service.name}
               fill
+              unoptimized
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />

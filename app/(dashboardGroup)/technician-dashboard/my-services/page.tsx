@@ -4,6 +4,7 @@ import { ServiceGrid } from "../../_components/technicianDashboard/ServiceGrid"
 
 export default async function MyServicePage() {
   const serviceResponse = await getMyServices()
+  // console.log("ssssss ", serviceResponse);
   const services = serviceResponse.data
 
   return (
@@ -14,7 +15,7 @@ export default async function MyServicePage() {
           Services You Offer
         </h1>
         <p className="mt-1 text-muted-foreground">
-          {services.length} service{services.length !== 1 ? "s" : ""} listed
+          {services?.length} service{services.length !== 1 ? "s" : ""} listed
         </p>
       </div>
 

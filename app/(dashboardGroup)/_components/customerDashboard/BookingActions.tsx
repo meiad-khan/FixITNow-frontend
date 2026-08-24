@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import type { BookingStatus } from "./BookingStatusBadge"
-import { makePayment } from "../../_actions/customerDashboard"
+import { makePayment, makeReview } from "../../_actions/customerDashboard"
 import { toast } from "sonner"
 
 type UserRole = "CUSTOMER" | "TECHNICIAN"
@@ -75,11 +75,24 @@ export default function BookingActions({
   }
 
 
-  const handleSubmitReview = () => {
-    console.log("Submit review:", { bookingId, rating, comment })
-    setReviewOpen(false)
-    setRating(0)
-    setComment("")
+  const handleSubmitReview = async() => {
+    console.log("Submit review:", { bookingId, rating, reviewText: comment })
+    try {
+      const payload = { bookingId, rating, reviewText: comment }
+      const result = await makeReview(payload)
+      if (result.success) {
+        toast.success("Review submitted successfully")
+      } else {
+        toast.error("Something went wrong. Try again")
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReviewOpen(false)
+      setRating(0)
+      setComment("")
+    }
+    
   }
 
 

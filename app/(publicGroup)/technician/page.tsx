@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button"
 import { TechnicianContent } from "../_components/technician/technician-content"
 import TechnicianFilter from "../_components/technician/technician-filter"
 import { getAllTechnician } from "../_actions/technicianActions/technicianActions"
 import { getAllCategory } from "../_actions/serviceActions/serviceActions"
 import { Category, Data } from "@/lib/type"
+import MobileTechnicianFilter from "../_components/technician/mobile-technician-filter"
 
 export default async function TechnicianPage({
   searchParams,
@@ -46,12 +46,15 @@ export default async function TechnicianPage({
         </div>
 
         {/* Mobile filter button */}
-        <div className="mb-6 flex items-center justify-between lg:hidden">
+        <div className="mb-6 flex items-center justify-between gap-4 lg:hidden">
           <p className="text-sm text-muted-foreground">
             Showing available technicians
           </p>
 
-          <Button variant="outline">Filters</Button>
+          <MobileTechnicianFilter
+            technicianLocation={technicianLocation}
+            categoryNames={categoryNames}
+          />
         </div>
 
         {/* Main content */}

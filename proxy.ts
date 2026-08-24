@@ -35,12 +35,7 @@ export async function proxy(request: NextRequest) {
       )
     : null
 
-  /*
-   * -------------------------------------------------------
-   * 1. Refresh access token if it is expired/invalid
-   * -------------------------------------------------------
-   */
-
+  //Refresh access token if it is expired/invalid
   if (!decodedAccessToken?.success && decodedRefreshToken?.success) {
     const result = await getNewAccessToken()
 
@@ -55,7 +50,6 @@ export async function proxy(request: NextRequest) {
 
       accessToken = newAccessToken
 
-      // IMPORTANT:
       // Decode the newly refreshed access token again
       decodedAccessToken = jwtUtils.verifyToken(
         newAccessToken,
@@ -64,39 +58,22 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  /*
-   * -------------------------------------------------------
-   * 2. Get user role
-   * -------------------------------------------------------
-   */
-
   let userRole: string | null = null
 
   if (decodedAccessToken?.success && decodedAccessToken.data) {
     userRole = (decodedAccessToken.data as JwtPayload).role ?? null
   }
-  
+
   // console.log("user role is  ", userRole);
 
-  /*
-   * -------------------------------------------------------
-   * 3. If access token is invalid and refresh failed,
-   *    remove the access token
-   * -------------------------------------------------------
-   */
-
+  //If access token is invalid and refresh failed, remove the access token
   if (!decodedAccessToken?.success) {
     cookieStore.delete("accessToken")
     accessToken = undefined
     userRole = null
   }
 
-  /*
-   * -------------------------------------------------------
-   * 4. Authenticated user should not visit login/register
-   * -------------------------------------------------------
-   */
-
+  //Authenticated user should not visit login/register
   const isAuthRoute = AUTH_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   )
@@ -111,25 +88,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
-  /*
-   * -------------------------------------------------------
-   * 5. Check public routes
-   * -------------------------------------------------------
-   */
-
+  //Check public routes
   const isPublicRoute = PUBLIC_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   )
 
-  /*
-   * -------------------------------------------------------
-   * 6. Authentication protection
-   *
-   * If user is not authenticated and route is not public
-   * or auth route -> redirect to login
-   * -------------------------------------------------------
-   */
-
+  //If user is not authenticated and route is not public or auth route -> redirect to login
   if (!userRole && !isPublicRoute && !isAuthRoute) {
     const loginUrl = new URL("/login", request.url)
 
@@ -138,12 +102,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  /*
-   * -------------------------------------------------------
-   * 7. CUSTOMER dashboard authorization
-   * -------------------------------------------------------
-   */
-
+  // CUSTOMER dashboard authorization
   if (pathname.startsWith("/dashboard")) {
     if (userRole !== "CUSTOMER") {
       const dashboard =
@@ -157,12 +116,7 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  /*
-   * -------------------------------------------------------
-   * 8. TECHNICIAN dashboard authorization
-   * -------------------------------------------------------
-   */
-
+  //TECHNICIAN dashboard authorization
   if (pathname.startsWith("/technician-dashboard")) {
     if (userRole !== "TECHNICIAN") {
       const dashboard =
@@ -176,12 +130,7 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  /*
-   * -------------------------------------------------------
-   * 9. ADMIN dashboard authorization
-   * -------------------------------------------------------
-   */
-
+  //ADMIN dashboard authorization
   if (pathname.startsWith("/admin-dashboard")) {
     if (userRole !== "ADMIN") {
       const dashboard =
@@ -195,11 +144,6 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  /*
-   * -------------------------------------------------------
-   * 10. Allow request
-   * -------------------------------------------------------
-   */
 
   return NextResponse.next()
 }

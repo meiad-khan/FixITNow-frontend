@@ -67,10 +67,8 @@ export default function TechnicianBooking({
     (service) => service.id === selectedService
   )
 
-  /* ============================================================
-      GET AVAILABLE TIME SLOTS
-  ============================================================ */
 
+//get available slots
   const getAvailableTimeSlots = (date: Date) => {
     const day = date
       .toLocaleDateString("en-US", {
@@ -117,10 +115,8 @@ export default function TechnicianBooking({
     return slots
   }
 
-  /* ============================================================
-      CREATE ISO DATETIME
-  ============================================================ */
-
+ 
+//create date format
   const createScheduledAt = (date: Date, time: string) => {
     const [timeValue, period] = time.split(" ")
 
@@ -141,9 +137,6 @@ export default function TechnicianBooking({
     return scheduledDate.toISOString()
   }
 
-  /* ============================================================
-      CONFIRM BOOKING
-  ============================================================ */
 
   const handleConfirmBooking = () => {
     setError("")
@@ -172,10 +165,6 @@ export default function TechnicianBooking({
         customerNote: customerNote.trim(),
       })
 
-      /* ========================================================
-          NOT LOGGED IN
-      ======================================================== */
-
       if (!result.success) {
         if (result.statusCode === 401) {
           router.push(`/login?redirectTo=${encodeURIComponent(redirectTo)}`)
@@ -188,9 +177,6 @@ export default function TechnicianBooking({
         return
       }
 
-      /* ========================================================
-          SUCCESS
-      ======================================================== */
 
       setIsSuccessDialogOpen(true)
     })
@@ -203,10 +189,7 @@ export default function TechnicianBooking({
   return (
     <>
       <div className="space-y-6">
-        {/* =====================================================
-            SERVICE
-        ====================================================== */}
-
+   
         <div className="space-y-3">
           <label className="text-sm font-medium">Select Service</label>
 
@@ -247,10 +230,6 @@ export default function TechnicianBooking({
             ))}
           </RadioGroup>
         </div>
-
-        {/* =====================================================
-            DATE
-        ====================================================== */}
 
         <div className="space-y-2">
           <label className="text-sm font-medium">Select Date</label>
@@ -297,10 +276,6 @@ export default function TechnicianBooking({
           </Popover>
         </div>
 
-        {/* =====================================================
-            TIME
-        ====================================================== */}
-
         <div className="space-y-2">
           <label className="text-sm font-medium">Available Time</label>
 
@@ -343,11 +318,6 @@ export default function TechnicianBooking({
             </div>
           )}
         </div>
-
-        {/* =====================================================
-            NOTE
-        ====================================================== */}
-
         <div className="space-y-2">
           <label htmlFor="customer-note" className="text-sm font-medium">
             Note for Technician
@@ -362,17 +332,9 @@ export default function TechnicianBooking({
           />
         </div>
 
-        {/* =====================================================
-            ERROR
-        ====================================================== */}
-
         {error && (
           <p className="text-sm font-medium text-destructive">{error}</p>
         )}
-
-        {/* =====================================================
-            SUMMARY
-        ====================================================== */}
 
         <div className="rounded-lg bg-muted/50 p-4">
           <div className="flex items-center justify-between gap-4">
@@ -394,10 +356,6 @@ export default function TechnicianBooking({
           </div>
         </div>
 
-        {/* =====================================================
-            CONFIRM BOOKING
-        ====================================================== */}
-
         <Button
           size="lg"
           className="w-full"
@@ -407,10 +365,6 @@ export default function TechnicianBooking({
           {isPending ? "Creating Booking..." : "Confirm Booking"}
         </Button>
       </div>
-
-      {/* =====================================================
-          SUCCESS DIALOG
-      ====================================================== */}
 
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
         <DialogContent>

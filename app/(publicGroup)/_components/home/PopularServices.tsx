@@ -1,8 +1,6 @@
-import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight, Wrench } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import HomeServiceCard from "../service/HomeServiceCard"
 

@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button"
 import { ServiceContent } from "../_components/service/service-content"
 import ServiceFilter from "../_components/service/service-filter"
 import { getAllTechnician } from "../_actions/technicianActions/technicianActions"
 import { getAllCategory } from "../_actions/serviceActions/serviceActions"
 import { Category, Data } from "@/lib/type"
+import MobileServiceFilter from "../_components/service/mobile-service-filter"
 
 export default async function ServicePage({
   searchParams,
@@ -45,12 +45,15 @@ export default async function ServicePage({
         </div>
 
         {/* Mobile filter button */}
-        <div className="mb-6 flex items-center justify-between lg:hidden">
+        <div className="mb-6 flex items-center justify-between gap-4 lg:hidden">
           <p className="text-sm text-muted-foreground">
             Showing available services
           </p>
 
-          <Button variant="outline">Filters</Button>
+          <MobileServiceFilter
+            technicianLocation={technicianLocation}
+            categoryNames={categoryNames}
+          />
         </div>
 
         {/* Main content */}

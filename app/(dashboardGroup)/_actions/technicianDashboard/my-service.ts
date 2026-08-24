@@ -9,7 +9,7 @@ export const getMyServices = async () => {
       // console.log("access token is ", accessToken);
     
       const res = await fetch(
-        `${process.env.BACKEND_API_URL}/api/services/technician`,
+        `${process.env.BACKEND_API_URL}/api/services/technician/all`,
         {
           headers: {
             Cookie: `accessToken=${accessToken}`,

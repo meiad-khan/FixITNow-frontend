@@ -60,6 +60,7 @@ export const getAllServices = async ({
   return result
 }
 
+
 export const getAllCategory = async () => {
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/categories`, {
     next: {
@@ -70,6 +71,7 @@ export const getAllCategory = async () => {
   const result = await res.json();
   return result;
 }
+
 
 export const getSingleService = async (id: string) => {
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/services/${id}`);

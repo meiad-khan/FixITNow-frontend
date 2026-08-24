@@ -3,7 +3,7 @@ import { ArrowUpRight, CalendarCog, ListChecks, Zap } from "lucide-react"
 
 const ACTIONS = [
   {
-    href: "/technician-dashboard/availability",
+    href: "/technician-dashboard/profile",
     title: "Manage Availability",
     subtitle: "Set the hours you can take jobs",
     icon: CalendarCog,

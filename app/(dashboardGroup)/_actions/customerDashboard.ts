@@ -1,5 +1,6 @@
 "use server"
 
+import { JsonWebTokenError } from "jsonwebtoken"
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 
@@ -105,10 +106,40 @@ export const makePayment = async (id:string) => {
    return result
 }
 
+
 export const getPaymentDetails = async (tran_id: string) => {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get("accessToken")?.value
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/payment/success/${tran_id}`, {
+    headers: {
+       Cookie: `accessToken=${accessToken}`,
+    },
     cache: "no-cache"
   });
   const result = await res.json();
   return result;
+}
+
+type ReviewPayload = {
+  bookingId: string
+  rating: number
+  reviewText:string
+}
+
+export const makeReview = async (payload:ReviewPayload) => {
+   const cookieStore = await cookies()
+   const accessToken = cookieStore.get("accessToken")?.value
+
+   // console.log("access token is ", accessToken);
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/reviews`, {
+     method:"POST",
+    headers: {
+       "Content-type":"application/json",
+       Cookie: `accessToken=${accessToken}`,
+    },
+    body:JSON.stringify(payload)
+   })
+   const result = await res.json()
+   return result
 }
