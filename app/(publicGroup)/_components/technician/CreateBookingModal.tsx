@@ -17,12 +17,14 @@ type CreateBookingModalProps = {
   services: Service[]
   availability: Record<string, string[]>
   technicianName: string
+  technicianId:string
 }
 
 export default function CreateBookingModal({
   services,
   availability,
   technicianName,
+  technicianId,
 }: CreateBookingModalProps) {
   const [open, setOpen] = useState(false)
 
@@ -51,6 +53,7 @@ export default function CreateBookingModal({
           services={services}
           availability={availability}
           technicianName={technicianName}
+          redirectTo={`/technician/${technicianId}`}
         />
       </DialogContent>
     </Dialog>

@@ -1,9 +1,24 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ClipboardList } from 'lucide-react'
-import React from 'react'
-import { bookingStats, totalBookings } from '../_config/dashboardUitls'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ClipboardList } from "lucide-react"
+import React from "react"
 
-export default function BookingOverview() {
+interface BookingStat {
+  title: string
+  value: number
+  icon: React.ElementType
+  iconClass: string
+  valueClass: string
+}
+
+interface BookingOverviewProps {
+  bookingStats: BookingStat[]
+  totalBookings: number
+}
+
+export default function BookingOverview({
+  bookingStats,
+  totalBookings,
+}: BookingOverviewProps) {
   return (
     <Card className="group overflow-hidden border-muted/60 transition-all duration-300 hover:shadow-lg">
       <CardHeader className="border-b bg-linear-to-br from-primary/5 to-transparent">

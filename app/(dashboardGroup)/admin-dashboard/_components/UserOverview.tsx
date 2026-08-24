@@ -1,9 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { UserCheck, Users, Wrench } from 'lucide-react'
-import React from 'react'
-import { totalAdmins, totalCustomers, totalTechnicians, totalUsers } from '../_config/dashboardUitls'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { UserCheck, Users, Wrench } from "lucide-react"
 
-export default function UserOverview() {
+interface UserOverviewProps {
+  totalUsers: number
+  totalCustomers: number
+  totalTechnicians: number
+  totalAdmins: number
+}
+
+export default function UserOverview({
+  totalUsers,
+  totalCustomers,
+  totalTechnicians,
+  totalAdmins,
+}: UserOverviewProps) {
   return (
     <Card className="group overflow-hidden border-muted/60 transition-all duration-300 hover:shadow-lg">
       <CardHeader className="border-b bg-linear-to-br from-violet-500/5 to-transparent">
@@ -20,8 +30,7 @@ export default function UserOverview() {
       </CardHeader>
 
       <CardContent className="space-y-3 p-5">
-        {/* Total */}
-
+        {/* Total Users */}
         <div className="group/user flex items-center justify-between rounded-xl border p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-50/50 hover:shadow-sm dark:hover:border-blue-900 dark:hover:bg-blue-950/20">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
@@ -42,7 +51,6 @@ export default function UserOverview() {
         </div>
 
         {/* Customers */}
-
         <div className="group/user flex items-center justify-between rounded-xl border p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-200 hover:bg-violet-50/50 hover:shadow-sm dark:hover:border-violet-900 dark:hover:bg-violet-950/20">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400">
@@ -63,7 +71,6 @@ export default function UserOverview() {
         </div>
 
         {/* Technicians */}
-
         <div className="group/user flex items-center justify-between rounded-xl border p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-200 hover:bg-orange-50/50 hover:shadow-sm dark:hover:border-orange-900 dark:hover:bg-orange-950/20">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 dark:bg-orange-950/50 dark:text-orange-400">
@@ -81,8 +88,7 @@ export default function UserOverview() {
           </p>
         </div>
 
-        {/* Admins */}
-
+        {/* Administrators */}
         <div className="group/user flex items-center justify-between rounded-xl border p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/50 hover:shadow-sm dark:hover:border-emerald-900 dark:hover:bg-emerald-950/20">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">

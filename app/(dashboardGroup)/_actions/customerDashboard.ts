@@ -1,6 +1,5 @@
 "use server"
 
-import { JsonWebTokenError } from "jsonwebtoken"
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 

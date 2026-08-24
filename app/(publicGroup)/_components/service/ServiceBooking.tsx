@@ -54,10 +54,6 @@ export default function ServiceBooking({
 
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false)
 
-  /* ============================================================
-      GET AVAILABLE TIME SLOTS
-  ============================================================ */
-
   const getAvailableTimeSlots = (date: Date) => {
     const day = date
       .toLocaleDateString("en-US", {
@@ -107,9 +103,6 @@ export default function ServiceBooking({
     return slots
   }
 
-  /* ============================================================
-      CREATE ISO DATETIME
-  ============================================================ */
 
   const createScheduledAt = (date: Date, time: string) => {
     const [timeValue, period] = time.split(" ")
@@ -131,9 +124,6 @@ export default function ServiceBooking({
     return scheduledDate.toISOString()
   }
 
-  /* ============================================================
-      CONFIRM BOOKING
-  ============================================================ */
 
   const handleConfirmBooking = () => {
     setError("")
@@ -157,9 +147,6 @@ export default function ServiceBooking({
         customerNote: customerNote.trim(),
       })
 
-      /* ========================================================
-          NOT LOGGED IN
-      ======================================================== */
 
       if (!result.success) {
         if (result.statusCode === 401) {
@@ -175,9 +162,6 @@ export default function ServiceBooking({
         return
       }
 
-      /* ========================================================
-          SUCCESS
-      ======================================================== */
 
       setIsSuccessDialogOpen(true)
     })
@@ -190,9 +174,7 @@ export default function ServiceBooking({
   return (
     <>
       <div className="space-y-6">
-        {/* =====================================================
-            FIXED SERVICE
-        ====================================================== */}
+      
 
         <div className="space-y-2">
           <label className="text-sm font-medium">Selected Service</label>
@@ -215,10 +197,6 @@ export default function ServiceBooking({
             <span className="shrink-0 font-semibold">৳{basePrice}</span>
           </div>
         </div>
-
-        {/* =====================================================
-            DATE
-        ====================================================== */}
 
         <div className="space-y-2">
           <label className="text-sm font-medium">Select Date</label>
@@ -265,9 +243,6 @@ export default function ServiceBooking({
           </Popover>
         </div>
 
-        {/* =====================================================
-            TIME
-        ====================================================== */}
 
         <div className="space-y-2">
           <label className="text-sm font-medium">Available Time</label>
@@ -312,9 +287,7 @@ export default function ServiceBooking({
           )}
         </div>
 
-        {/* =====================================================
-            CUSTOMER NOTE
-        ====================================================== */}
+
 
         <div className="space-y-2">
           <label htmlFor="customer-note" className="text-sm font-medium">
@@ -330,17 +303,10 @@ export default function ServiceBooking({
           />
         </div>
 
-        {/* =====================================================
-            ERROR
-        ====================================================== */}
 
         {error && (
           <p className="text-sm font-medium text-destructive">{error}</p>
         )}
-
-        {/* =====================================================
-            SUMMARY
-        ====================================================== */}
 
         <div className="rounded-lg bg-muted/50 p-4">
           <div className="flex items-center justify-between gap-4">
@@ -358,9 +324,6 @@ export default function ServiceBooking({
           </div>
         </div>
 
-        {/* =====================================================
-            CONFIRM BOOKING
-        ====================================================== */}
 
         <Button
           size="lg"
@@ -372,9 +335,7 @@ export default function ServiceBooking({
         </Button>
       </div>
 
-      {/* =======================================================
-          SUCCESS DIALOG
-      ======================================================== */}
+
 
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
         <DialogContent>

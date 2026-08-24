@@ -1,16 +1,35 @@
-import React from "react"
+import { ClipboardList } from "lucide-react"
+
+import { getDashboardData } from "./_config/dashboardUitls"
 
 import Stats from "./_components/Stats"
 import BookingOverview from "./_components/BookingOverview"
 import UserOverview from "./_components/UserOverview"
 import PlatformSummary from "./_components/PlatformSummary"
-import { ClipboardList } from "lucide-react"
+import { getAllBookings, getUsersStats } from "../_actions/adminDashboard"
 
 const AdminDashboardPage = async () => {
- 
+  const [userStatsResponse, bookingResponse] = await Promise.all([
+    getUsersStats(),
+    getAllBookings(),
+  ])
+
+  const {
+    stats,
+    bookingStats,
+    totalUsers,
+    totalCustomers,
+    totalTechnicians,
+    totalAdmins,
+    totalBookings,
+    activeBookings,
+    completedBookings,
+    totalRevenue,
+  } = getDashboardData(userStatsResponse, bookingResponse)
+
   return (
     <div className="min-h-full space-y-8 p-6 lg:p-8">
-      {/*  HEADER  */}
+      {/* HEADER */}
       <div className="relative overflow-hidden rounded-2xl border bg-linear-to-br from-primary/10 via-background to-violet-500/5 p-6">
         <div className="absolute -top-16 -right-16 size-40 rounded-full bg-primary/10 blur-2xl" />
 
@@ -35,25 +54,35 @@ const AdminDashboardPage = async () => {
         </div>
       </div>
 
-      {/* Sats */}
-      <Stats />
+      {/* STATS */}
+      <Stats stats={stats} />
 
-      {/*  MIDDLE  */}
+      {/* MIDDLE */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Booking Overview */}
-        <BookingOverview />
+        <BookingOverview
+          bookingStats={bookingStats}
+          totalBookings={totalBookings}
+        />
 
         {/* User Overview */}
-        <UserOverview />
+        <UserOverview
+          totalUsers={totalUsers}
+          totalCustomers={totalCustomers}
+          totalTechnicians={totalTechnicians}
+          totalAdmins={totalAdmins}
+        />
       </div>
 
-      {/*  BOTTOM  */}
+      {/* BOTTOM */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Recent Users */}
-        {/* <RecentUsers /> */}
-
         {/* Platform Summary */}
-        <PlatformSummary />
+        <PlatformSummary
+          totalBookings={totalBookings}
+          activeBookings={activeBookings}
+          completedBookings={completedBookings}
+          totalRevenue={totalRevenue}
+        />
       </div>
     </div>
   )

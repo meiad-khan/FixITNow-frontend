@@ -1,9 +1,24 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { CheckCircle2, CircleDollarSign, ClipboardList, TrendingUp } from 'lucide-react'
-import React from 'react'
-import { activeBookings, completedBookings, totalBookings, totalRevenue } from '../_config/dashboardUitls'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  CheckCircle2,
+  CircleDollarSign,
+  ClipboardList,
+  TrendingUp,
+} from "lucide-react"
 
-export default function PlatformSummary() {
+interface PlatformSummaryProps {
+  totalBookings: number
+  activeBookings: number
+  completedBookings: number
+  totalRevenue: number
+}
+
+export default function PlatformSummary({
+  totalBookings,
+  activeBookings,
+  completedBookings,
+  totalRevenue,
+}: PlatformSummaryProps) {
   return (
     <Card className="overflow-hidden border-muted/60 transition-all duration-300 hover:shadow-lg">
       <CardHeader className="border-b bg-linear-to-br from-pink-500/5 to-transparent">

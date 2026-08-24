@@ -23,7 +23,7 @@ export const updateBookingStatus = async (id:string, status:BookingStatus) => {
     body: JSON.stringify(payload),
   })
   const result = await res.json()
-  console.log(result)
+  // console.log(result)
   revalidatePath("/technician-dashboard/bookings")
   return result
 }

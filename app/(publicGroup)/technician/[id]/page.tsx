@@ -104,6 +104,7 @@ export default async function TechnicianDetailsPage({
               services={technician.services}
               availability={technician.availability}
               technicianName={technician.user.name}
+              technicianId={id}
             />
           </div>
         </div>

@@ -28,7 +28,7 @@ export const beATechnician = async (payload: TechnicianProfile) => {
   const cookieStore = await cookies()
   const accessToken = cookieStore.get("accessToken")?.value
 
-  console.log("payload is ", payload);
+  // console.log("payload is ", payload);
 
   // console.log("access token is ", accessToken);
 
@@ -45,6 +45,6 @@ export const beATechnician = async (payload: TechnicianProfile) => {
   )
   const result = await res.json()
   revalidatePath("/technician-dashboard/profile")
-  console.log("result is ", result);
+  // console.log("result is ", result);
   return result
 }
