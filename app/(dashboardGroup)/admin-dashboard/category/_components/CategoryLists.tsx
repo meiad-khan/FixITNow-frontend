@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, FolderTree, Layers3, Package } from "lucide-react"
+import { BriefcaseBusiness, FolderTree} from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"

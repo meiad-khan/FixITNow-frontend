@@ -1,5 +1,5 @@
-import { Booking, IUser } from "@/lib/type"
-import { getAllBookings, getAllUsers, getUsersStats } from "../../_actions/adminDashboard"
+import { Booking } from "@/lib/type"
+import { getAllBookings, getUsersStats } from "../../_actions/adminDashboard"
 import {
   CalendarCheck,
   CheckCircle2,
@@ -20,9 +20,8 @@ const [userStatsResponse, bookingResponse] = await Promise.all([
 const users = userStatsResponse.data.stats ?? {}
 const bookings = bookingResponse.data ?? []
 
-// -----------------------------
+
 // User Statistics
-// -----------------------------
 
 export const totalUsers = users.totalUsers
 
@@ -66,9 +65,8 @@ const cancelledBookings = bookings.filter(
   (booking: Booking) => booking.status === "CANCELLED"
 ).length
 
-// -----------------------------
+
 // Revenue
-// -----------------------------
 
 export const totalRevenue = bookings
   .filter((booking: Booking) => booking.status === "COMPLETED")
@@ -76,19 +74,10 @@ export const totalRevenue = bookings
     return total + Number(booking.price)
   }, 0)
 
-// -----------------------------
-// Recent Users
-// -----------------------------
 
-// export const recentUsers = [...users]
-//   .sort(
-//     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-//   )
-//   .slice(0, 5)
 
-// -----------------------------
 // Dashboard Stats
-// -----------------------------
+
 
 export const stats = [
   {

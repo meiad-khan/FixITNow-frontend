@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { CalendarDays, CheckCircle2, Clock3, Wrench } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -21,6 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+
 import { createBooking } from "../../_actions/technicianActions/bookingActions"
 import Link from "next/link"
 
@@ -34,13 +36,18 @@ type TechnicianBookingProps = {
   services: Service[]
   availability: Record<string, string[]>
   technicianName: string
+
+  // The current technician details page
+  redirectTo: string
 }
 
 export default function TechnicianBooking({
   services,
   availability,
   technicianName,
+  redirectTo,
 }: TechnicianBookingProps) {
+  const router = useRouter()
 
   const [isPending, startTransition] = useTransition()
 
@@ -59,6 +66,10 @@ export default function TechnicianBooking({
   const selectedServiceData = services.find(
     (service) => service.id === selectedService
   )
+
+  /* ============================================================
+      GET AVAILABLE TIME SLOTS
+  ============================================================ */
 
   const getAvailableTimeSlots = (date: Date) => {
     const day = date
@@ -82,6 +93,7 @@ export default function TechnicianBooking({
       const [endHour, endMinute] = end.split(":").map(Number)
 
       let currentMinutes = startHour * 60 + startMinute
+
       const endMinutes = endHour * 60 + endMinute
 
       while (currentMinutes < endMinutes) {
@@ -105,6 +117,9 @@ export default function TechnicianBooking({
     return slots
   }
 
+  /* ============================================================
+      CREATE ISO DATETIME
+  ============================================================ */
 
   const createScheduledAt = (date: Date, time: string) => {
     const [timeValue, period] = time.split(" ")
@@ -125,6 +140,10 @@ export default function TechnicianBooking({
 
     return scheduledDate.toISOString()
   }
+
+  /* ============================================================
+      CONFIRM BOOKING
+  ============================================================ */
 
   const handleConfirmBooking = () => {
     setError("")
@@ -153,10 +172,25 @@ export default function TechnicianBooking({
         customerNote: customerNote.trim(),
       })
 
+      /* ========================================================
+          NOT LOGGED IN
+      ======================================================== */
+
       if (!result.success) {
+        if (result.statusCode === 401) {
+          router.push(`/login?redirectTo=${encodeURIComponent(redirectTo)}`)
+
+          return
+        }
+
         setError(result.message || "Failed to create booking")
+
         return
       }
+
+      /* ========================================================
+          SUCCESS
+      ======================================================== */
 
       setIsSuccessDialogOpen(true)
     })
@@ -166,19 +200,22 @@ export default function TechnicianBooking({
     ? getAvailableTimeSlots(selectedDate)
     : []
 
-  
   return (
     <>
       <div className="space-y-6">
         {/* =====================================================
             SERVICE
         ====================================================== */}
+
         <div className="space-y-3">
           <label className="text-sm font-medium">Select Service</label>
 
           <RadioGroup
             value={selectedService}
-            onValueChange={setSelectedService}
+            onValueChange={(value) => {
+              setSelectedService(value)
+              setError("")
+            }}
             className="space-y-2"
           >
             {services.map((service) => (
@@ -214,6 +251,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             DATE
         ====================================================== */}
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Select Date</label>
 
@@ -245,8 +283,15 @@ export default function TechnicianBooking({
                 onSelect={(date) => {
                   setSelectedDate(date)
                   setSelectedTime("")
+                  setError("")
                 }}
-                disabled={(date) => date < new Date()}
+                disabled={(date) => {
+                  const today = new Date()
+
+                  today.setHours(0, 0, 0, 0)
+
+                  return date < today
+                }}
               />
             </PopoverContent>
           </Popover>
@@ -255,6 +300,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             TIME
         ====================================================== */}
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Available Time</label>
 
@@ -286,7 +332,10 @@ export default function TechnicianBooking({
                   type="button"
                   variant={selectedTime === time ? "default" : "outline"}
                   className="h-10"
-                  onClick={() => setSelectedTime(time)}
+                  onClick={() => {
+                    setSelectedTime(time)
+                    setError("")
+                  }}
                 >
                   {time}
                 </Button>
@@ -298,6 +347,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             NOTE
         ====================================================== */}
+
         <div className="space-y-2">
           <label htmlFor="customer-note" className="text-sm font-medium">
             Note for Technician
@@ -315,6 +365,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             ERROR
         ====================================================== */}
+
         {error && (
           <p className="text-sm font-medium text-destructive">{error}</p>
         )}
@@ -322,6 +373,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             SUMMARY
         ====================================================== */}
+
         <div className="rounded-lg bg-muted/50 p-4">
           <div className="flex items-center justify-between gap-4">
             <div>
@@ -345,6 +397,7 @@ export default function TechnicianBooking({
         {/* =====================================================
             CONFIRM BOOKING
         ====================================================== */}
+
         <Button
           size="lg"
           className="w-full"
@@ -358,6 +411,7 @@ export default function TechnicianBooking({
       {/* =====================================================
           SUCCESS DIALOG
       ====================================================== */}
+
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -384,8 +438,8 @@ export default function TechnicianBooking({
               Close
             </Button>
 
-            <Button asChild >
-              <Link href={"/dashboard/bookings"}>Go to My Bookings</Link>
+            <Button asChild>
+              <Link href="/dashboard/bookings">Go to My Bookings</Link>
             </Button>
           </DialogFooter>
         </DialogContent>

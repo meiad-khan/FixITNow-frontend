@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { CalendarDays, CheckCircle2, Clock3, Wrench } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -20,6 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+
 import { createBooking } from "../../_actions/technicianActions/bookingActions"
 import Link from "next/link"
 
@@ -38,6 +40,7 @@ export default function ServiceBooking({
   availability,
   technicianName,
 }: ServiceBookingProps) {
+  const router = useRouter()
 
   const [isPending, startTransition] = useTransition()
 
@@ -154,11 +157,27 @@ export default function ServiceBooking({
         customerNote: customerNote.trim(),
       })
 
+      /* ========================================================
+          NOT LOGGED IN
+      ======================================================== */
+
       if (!result.success) {
+        if (result.statusCode === 401) {
+          const redirectTo = `/service/${serviceId}`
+
+          router.push(`/login?redirectTo=${encodeURIComponent(redirectTo)}`)
+
+          return
+        }
+
         setError(result.message || "Failed to create booking.")
 
         return
       }
+
+      /* ========================================================
+          SUCCESS
+      ======================================================== */
 
       setIsSuccessDialogOpen(true)
     })
@@ -353,9 +372,9 @@ export default function ServiceBooking({
         </Button>
       </div>
 
-      {/* =====================================================
+      {/* =======================================================
           SUCCESS DIALOG
-      ====================================================== */}
+      ======================================================== */}
 
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
         <DialogContent>
@@ -384,7 +403,7 @@ export default function ServiceBooking({
             </Button>
 
             <Button asChild>
-              <Link href={"/dashboard/bookings"}>Go to My Bookings</Link>
+              <Link href="/dashboard/bookings">Go to My Bookings</Link>
             </Button>
           </DialogFooter>
         </DialogContent>

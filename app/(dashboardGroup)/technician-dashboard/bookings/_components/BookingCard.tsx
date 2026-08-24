@@ -42,7 +42,7 @@ export function BookingCard({ booking }: BookingCardProps) {
               <p className="mt-1 text-sm text-[#837b87]">
                 Customer:{" "}
                 <span className="font-medium text-[#4b454e]">
-                  {booking.user.name}
+                  {(booking.user!).name}
                 </span>
               </p>
             </div>

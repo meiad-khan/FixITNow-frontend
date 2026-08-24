@@ -8,8 +8,7 @@ import {
   ShieldCheck,
 } from "lucide-react"
 
-import { getPaymentDetails, makePayment } from "../../_actions/customerDashboard"
-import { Button } from "@/components/ui/button"
+import { getPaymentDetails } from "../../_actions/customerDashboard"
 import PayAgainButton from "./_components/PayAgain"
 
 type SearchParams = Promise<{

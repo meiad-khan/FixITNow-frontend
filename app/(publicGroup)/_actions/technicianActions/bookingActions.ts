@@ -17,6 +17,7 @@ export const createBooking = async (payload: CreateBookingPayload) => {
     if (!accessToken) {
       return {
         success: false,
+        statusCode: 401,
         message: "You must be logged in to create a booking",
       }
     }

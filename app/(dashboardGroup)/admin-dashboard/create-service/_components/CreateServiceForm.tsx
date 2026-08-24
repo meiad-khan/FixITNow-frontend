@@ -29,8 +29,7 @@ import {
 
 import { createService } from "../_actions/create-service"
 
-import { Technician } from "@/app/(publicGroup)/_components/technician/technician-card"
-import { Category } from "@/lib/type"
+import { Category, Data } from "@/lib/type"
 
 import {
   ServiceFormInput,
@@ -39,7 +38,7 @@ import {
 } from "../_config/zod"
 
 type Props = {
-  technicians: Technician[]
+  technicians: Data[]
   categories: Category[]
 }
 

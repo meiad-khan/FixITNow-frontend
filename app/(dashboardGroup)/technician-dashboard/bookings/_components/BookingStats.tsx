@@ -23,6 +23,7 @@ export function BookingStats({
   inProgressBookings,
   completedBookings,
 }: BookingStatsProps) {
+
   const stats = [
     {
       title: "All Bookings",
@@ -69,7 +70,7 @@ export function BookingStats({
         return (
           <Card
             key={stat.title}
-            className={`rounded-[24px] border-[#e8e4e8] bg-gradient-to-br ${stat.cardClass} shadow-[0_8px_25px_rgba(0,0,0,0.06)]`}
+            className={`rounded-[24px] border-[#e8e4e8] bg-linear-to-br ${stat.cardClass} shadow-[0_8px_25px_rgba(0,0,0,0.06)]`}
           >
             <CardContent className="p-6">
               <div className="flex items-start justify-between">

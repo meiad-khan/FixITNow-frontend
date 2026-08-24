@@ -106,7 +106,6 @@ export default async function TechnicianDetailsPage({
               availability={technician.availability}
               technicianName={technician.user.name}
             />
-            
           </div>
         </div>
       </section>
@@ -167,6 +166,7 @@ export default async function TechnicianDetailsPage({
                   services={technician.services}
                   availability={technician.availability}
                   technicianName={technician.user.name}
+                  redirectTo={`/technician/${technician.id}`}
                 />
               </CardContent>
             </Card>

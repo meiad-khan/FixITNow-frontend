@@ -1,56 +1,70 @@
 "use client"
 
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React, { startTransition, useActionState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { LoginFormData, loginSchema } from '../_config/auth.shcema'
-import { Spinner } from '@/components/ui/spinner'
-import { loginAction, LoginState } from '../_actions/authActions'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { zodResolver } from "@hookform/resolvers/zod"
+import React, { startTransition, useActionState, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { LoginFormData, loginSchema } from "../_config/auth.shcema"
+import { Spinner } from "@/components/ui/spinner"
+import { loginAction, LoginState } from "../_actions/authActions"
+import { toast } from "sonner"
+import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
+import { Input } from "@/components/ui/input"
 
 const LoginForm = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
-  const router = useRouter();
+  const redirectTo = searchParams.get("redirectTo")
+
   const initialState: LoginState = {
     success: false,
     statusCode: 0,
     message: "",
     data: {
       accessToken: "",
-      refreshToken:""
-    }
+      refreshToken: "",
+    },
   }
 
-  const [state, action, pending] = useActionState(loginAction, initialState);
+  const [state, action, pending] = useActionState(loginAction, initialState)
 
   const {
     register,
     handleSubmit,
-    formState:{errors},
-   } = useForm({
-    resolver:zodResolver(loginSchema)
-   })
-  
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  })
+
   const onSubmit = (data: LoginFormData) => {
-    const formData = new FormData();
-    formData.append("email", data.email);
-    formData.append("password", data.password);
+    const formData = new FormData()
+
+    formData.append("email", data.email)
+    formData.append("password", data.password)
 
     startTransition(() => {
-      action(formData) //(formData)
+      action(formData)
     })
-    
   }
 
   useEffect(() => {
     if (!state.message) return
+
     if (state.success) {
-      toast.success(state.message);
+      toast.success(state.message)
+
+      // 1. Redirect user back to previous page
+
+      if (redirectTo) {
+        router.push(redirectTo)
+        return
+      }
+
+      // 2. Otherwise use role-based dashboard
+   
       if (state.role === "CUSTOMER") {
         router.push("/dashboard")
       } else if (state.role === "TECHNICIAN") {
@@ -59,9 +73,9 @@ const LoginForm = () => {
         router.push("/admin-dashboard")
       }
     } else {
-      toast.error(state.message);
+      toast.error(state.message)
     }
-  }, [state, router]);
+  }, [state, router, redirectTo])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -72,24 +86,29 @@ const LoginForm = () => {
             placeholder="Enter your email"
             {...register("email")}
           />
+
           {errors.email && (
             <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
+
         <div className="space-y-2">
           <Input
             type="password"
             placeholder="Enter your password"
             {...register("password")}
           />
+
           {errors.password && (
             <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
         </div>
+
         <Button type="submit" disabled={pending}>
           {pending ? <Spinner /> : "Login"}
         </Button>
       </Card>
+
       <div className="text-center text-sm text-slate-500">
         New to FixIT?{" "}
         <Link
