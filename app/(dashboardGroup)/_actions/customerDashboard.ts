@@ -161,5 +161,7 @@ export const cancelBooking = async (id: string) => {
     }
   )
   const result = await res.json()
+  revalidatePath("/dashboard/bookings");
+  revalidatePath("/dashboard");
   return result
 }
