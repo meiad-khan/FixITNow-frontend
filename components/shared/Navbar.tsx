@@ -38,6 +38,7 @@ import {
   UserOption,
 } from "../utils/options"
 import { cn } from "@/lib/utils"
+import ModeToggle from "./ModeToggle"
 
 type NavLink = {
   label: string
@@ -140,7 +141,7 @@ export function Navbar({ user }: { user: ProfileResponse }) {
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="w-[280px] sm:w-[320px]">
+            <SheetContent side="left" className="w-70 sm:w-[320px]">
               <SheetHeader>
                 <SheetTitle className="text-left text-xl text-primary">
                   FixIT Now.
@@ -168,7 +169,7 @@ export function Navbar({ user }: { user: ProfileResponse }) {
               </div>
             </SheetContent>
           </Sheet>
-
+           <ModeToggle/>
           {/* User */}
           {user.success ? (
             <DropdownMenu>
