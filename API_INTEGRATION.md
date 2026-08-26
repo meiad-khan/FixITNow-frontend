@@ -21,6 +21,7 @@ This document describes the backend API endpoints integrated into the FixItNow f
 | `PATCH api/technician/profile` | `update-profile.ts → updateTechnicianProfile` | `/technician-dashboard/profile` |
 | `POST /api/bookings` | `bookingActions.ts → createBooking` | `/service/:id`, `/technician/:id` |
 | `GET api/bookings` | `customerDashboard.ts → getMyBookings` | Customer Dashboard |
+| `PATCH api/bookings/:id/cancel` | `customerDashboard.ts → cancelBooking` | Customer Dashboard |
 | `GET /api/admin/bookings` | `adminDashboard.ts → getAllBookings` | Admin Dashboard |
 | `GET /api/bookings/technician` | `technician-bookings.ts → getAllBookingsForTechnician` | `/technician-dashboard/bookings` |
 | `PATCH /api/bookings/:id` | `updateBookingStatus.ts → updateBookingStatus` | Technician Dashboard |
