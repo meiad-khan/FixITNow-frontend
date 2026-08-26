@@ -1,13 +1,7 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
 
+import { Toaster } from "sonner"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
-import { Toaster } from "sonner";
-import { getProfile } from "@/service/getProfile";
-import { Navbar } from "@/components/shared/Navbar";
-import Footer from "@/components/shared/Footer";
-
 
 
 export const metadata = {
@@ -29,9 +23,16 @@ export default async function RootLayout({
     >
       <body>
         {/* <Navbar user={user}/>  */}
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         {/* <Footer/> */}
-        <Toaster position="top-right"/>
+        <Toaster position="top-right" />
       </body>
     </html>
   )
