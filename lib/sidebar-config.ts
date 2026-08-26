@@ -1,6 +1,5 @@
 import {
   LayoutDashboard,
-  CalendarDays,
   CreditCard,
   User,
   BriefcaseBusiness,

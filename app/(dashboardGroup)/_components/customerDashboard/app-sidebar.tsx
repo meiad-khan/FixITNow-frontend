@@ -44,7 +44,7 @@ export function AppSidebar({ role }: { role: UserRole }) {
                 const isActive =
                   pathname === item.href ||
                   (item.href !== "/dashboard" &&
-                    item.href !== "/technician/dashboard" &&
+                    item.href !== "/technician-dashboard" &&
                     item.href !== "/admin-dashboard" &&
                     pathname.startsWith(item.href))
 
