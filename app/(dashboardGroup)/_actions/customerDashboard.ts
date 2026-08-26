@@ -142,3 +142,21 @@ export const makeReview = async (payload:ReviewPayload) => {
    const result = await res.json()
    return result
 }
+
+
+export const cancelBooking = async (id: string) => {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get("accessToken")?.value
+
+  // console.log("access token is ", accessToken);
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/bookings/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+      Cookie: `accessToken=${accessToken}`,
+    }
+  })
+  const result = await res.json()
+  return result
+}

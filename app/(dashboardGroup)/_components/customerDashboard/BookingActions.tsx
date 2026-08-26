@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import type { BookingStatus } from "./BookingStatusBadge"
-import { makePayment, makeReview } from "../../_actions/customerDashboard"
+import { cancelBooking, makePayment, makeReview } from "../../_actions/customerDashboard"
 import { toast } from "sonner"
 
 type UserRole = "CUSTOMER" | "TECHNICIAN"
@@ -77,7 +77,7 @@ export default function BookingActions({
 
 
   const handleSubmitReview = async() => {
-    console.log("Submit review:", { bookingId, rating, reviewText: comment })
+    // console.log("Submit review:", { bookingId, rating, reviewText: comment })
     try {
       const payload = { bookingId, rating, reviewText: comment }
       const result = await makeReview(payload)
@@ -97,8 +97,14 @@ export default function BookingActions({
   }
 
 
-  const handleConfirmCancel = () => {
+  const handleConfirmCancel = async() => {
     // console.log("Cancel booking:", bookingId)
+    const result = await cancelBooking(bookingId);
+    if (result.success) {
+      toast.success(result.message||"Booking cancelled successfully")
+    } else {
+      toast.error(result.message||"Something went wrong")
+    }
     setCancelOpen(false)
   }
 
