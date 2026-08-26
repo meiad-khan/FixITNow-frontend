@@ -64,13 +64,14 @@ export default function BookingActions({
     try {
       const result = await makePayment(bookingId);
       if (result.success) {
-        router.push(result.data.paymentUrl);
+        router.push(result.data.paymentUrl)
         toast.success("Payment successfull")
       } else {
-        toast.error("Payment failed")
+        toast.error(result.message || "Payment failed")
       }
     } catch (error) {
-      console.log(error);
+      console.log("Payment error ", error);
+      toast.error("Something went wrong while connecting to the payment gateway");
     }
   }
 

@@ -90,7 +90,7 @@ export const makePayment = async (id:string) => {
   const payload = {
     bookingId:id,
   }
-  console.log("Payload is ",payload)
+  // console.log("Payload is ",payload)
    const res = await fetch(`${process.env.BACKEND_API_URL}/api/payment/init`, {
      method: "POST",
      headers: {
@@ -101,7 +101,7 @@ export const makePayment = async (id:string) => {
    })
   const result = await res.json();
   revalidatePath("/dashboard");
-  console.log("payment result is ", result);
+  // console.log("payment result is ", result);
    return result
 }
 
