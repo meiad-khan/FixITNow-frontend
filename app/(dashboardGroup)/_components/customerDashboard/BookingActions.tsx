@@ -55,13 +55,15 @@ export default function BookingActions({
   const [reviewOpen, setReviewOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState("")
+  const [isPending, setIsPending] = useState(false);
 
   const [cancelOpen, setCancelOpen] = useState(false)
 
   const canCustomerCancel = ["REQUESTED", "ACCEPTED", "PAID"].includes(status)
 
    const handlePay = async() => {
-    try {
+     try {
+       setIsPending(true);
       const result = await makePayment(bookingId);
       if (result.success) {
         router.push(result.data.paymentUrl)
@@ -72,6 +74,8 @@ export default function BookingActions({
     } catch (error) {
       console.log("Payment error ", error);
       toast.error("Something went wrong while connecting to the payment gateway");
+     } finally {
+       setIsPending(false);
     }
   }
 
@@ -79,6 +83,7 @@ export default function BookingActions({
   const handleSubmitReview = async() => {
     // console.log("Submit review:", { bookingId, rating, reviewText: comment })
     try {
+      setIsPending(true);
       const payload = { bookingId, rating, reviewText: comment }
       const result = await makeReview(payload)
       if (result.success) {
@@ -87,11 +92,15 @@ export default function BookingActions({
         toast.error("Something went wrong. Try again")
       }
     } catch (error) {
-      console.log(error);
+      console.log("Review submission error ", error);
+      toast.error(
+        "Something went wrong while connecting to the server"
+      )
     } finally {
       setReviewOpen(false)
       setRating(0)
       setComment("")
+      setIsPending(false);
     }
     
   }
@@ -99,13 +108,23 @@ export default function BookingActions({
 
   const handleConfirmCancel = async() => {
     // console.log("Cancel booking:", bookingId)
-    const result = await cancelBooking(bookingId);
-    if (result.success) {
-      toast.success(result.message||"Booking cancelled successfully")
-    } else {
-      toast.error(result.message||"Something went wrong")
+    try {
+      setIsPending(true);
+      const result = await cancelBooking(bookingId)
+      if (result.success) {
+        toast.success(result.message || "Booking cancelled successfully")
+      } else {
+        toast.error(result.message || "Something went wrong")
+      }
+    } catch (error) {
+      console.log("Error when cancel booking ", error);
+      toast.error(
+        "Something went wrong while connecting to the server"
+      )
+    } finally {
+      setCancelOpen(false);
+      setIsPending(false);
     }
-    setCancelOpen(false)
   }
 
 
@@ -119,7 +138,7 @@ export default function BookingActions({
       <>
         <div className="flex flex-wrap items-center gap-2">
           {status === "ACCEPTED" && (
-            <Button size="sm" onClick={handlePay}>
+            <Button disabled={isPending} size="sm" onClick={handlePay}>
               <CreditCard className="mr-2 size-4" />
               Pay Now
             </Button>
@@ -192,7 +211,10 @@ export default function BookingActions({
               <Button variant="outline" onClick={() => setReviewOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleSubmitReview} disabled={rating === 0}>
+              <Button
+                onClick={handleSubmitReview}
+                disabled={rating === 0 || isPending}
+              >
                 Submit Review
               </Button>
             </DialogFooter>
@@ -211,6 +233,7 @@ export default function BookingActions({
             <AlertDialogFooter>
               <AlertDialogCancel>Keep Booking</AlertDialogCancel>
               <AlertDialogAction
+                disabled={isPending}
                 onClick={handleConfirmCancel}
                 className="text-destructive-foreground bg-destructive hover:bg-destructive/90"
               >
