@@ -150,13 +150,16 @@ export const cancelBooking = async (id: string) => {
 
   // console.log("access token is ", accessToken);
 
-  const res = await fetch(`${process.env.BACKEND_API_URL}/api/bookings/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-type": "application/json",
-      Cookie: `accessToken=${accessToken}`,
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/bookings/${id}/cancel`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+        Cookie: `accessToken=${accessToken}`,
+      },
     }
-  })
+  )
   const result = await res.json()
   return result
 }

@@ -3,7 +3,7 @@ import { CalendarDays, Clock3, DollarSign, Wrench } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Booking } from "@/lib/type"
 import { BookingStatusBadge } from "./BookingStatusBadge"
-import { BookingActions } from "./BookingActions"
+import BookingActions from "@/app/(dashboardGroup)/_components/customerDashboard/BookingActions"
 
 interface BookingCardProps {
   booking: Booking
@@ -105,7 +105,7 @@ export function BookingCard({ booking }: BookingCardProps) {
 
         {/* Actions */}
         <div className="mt-6 flex justify-end">
-          <BookingActions bookingId={booking.id} status={booking.status} />
+          <BookingActions bookingId={booking.id} status={booking.status} role="TECHNICIAN"/>
         </div>
       </CardContent>
     </Card>

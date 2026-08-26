@@ -35,6 +35,7 @@ import {
 import type { BookingStatus } from "./BookingStatusBadge"
 import { cancelBooking, makePayment, makeReview } from "../../_actions/customerDashboard"
 import { toast } from "sonner"
+import { updateBookingStatus } from "../../_actions/technicianDashboard/update-booking-status"
 
 type UserRole = "CUSTOMER" | "TECHNICIAN"
 
@@ -67,7 +68,6 @@ export default function BookingActions({
       const result = await makePayment(bookingId);
       if (result.success) {
         router.push(result.data.paymentUrl)
-        toast.success("Payment successfull")
       } else {
         toast.error(result.message || "Payment failed")
       }
@@ -128,8 +128,36 @@ export default function BookingActions({
   }
 
 
-  const handleAction = (action: string) => {
-    console.log(`Booking action: ${action}`)
+  const handleAction = async(value:BookingStatus) => {
+    console.log(`Booking action: ${value}`)
+     try {
+          setIsPending(true)
+          const result = await updateBookingStatus(bookingId, value)
+          if (result.success) {
+            if (value === "ACCEPTED") {
+              toast.success("Booking accepted")
+            } else if (value === "DECLINED") {
+              toast.success("Booking declined")
+            } else if (value === "COMPLETED") {
+              toast.success("Booking completed successfully")
+            } else if (value === "IN_PROGRESS") {
+              toast.success("Booking is on progress")
+            }
+          } else {
+            if (result.errorDetails) {
+              if (result.errorDetails[0].message) {
+                toast.error(result.errorDetails[0].message)
+              }
+            } else {
+              toast.error(result.message)
+            }
+          }
+        } catch (error) {
+          console.log("Error during update status by technician ", error)
+        } finally {
+          setIsPending(false)
+        }
+
   }
 
  
@@ -174,6 +202,7 @@ export default function BookingActions({
           )}
         </div>
 
+        
         {/* Leave a Review modal */}
         <Dialog open={reviewOpen} onOpenChange={setReviewOpen}>
           <DialogContent>
@@ -215,7 +244,7 @@ export default function BookingActions({
                 onClick={handleSubmitReview}
                 disabled={rating === 0 || isPending}
               >
-                Submit Review
+                {isPending ? "Submitting..." : "Submit Review"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -237,7 +266,7 @@ export default function BookingActions({
                 onClick={handleConfirmCancel}
                 className="text-destructive-foreground bg-destructive hover:bg-destructive/90"
               >
-                Yes, Cancel
+                {isPending ? "Cancelling..." : "Yes, Cancel"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -253,36 +282,36 @@ export default function BookingActions({
     case "REQUESTED":
       return (
         <div className="flex flex-wrap items-center gap-2">
-          <Button size="sm" onClick={() => handleAction("accept")}>
+          <Button size="sm" onClick={() => handleAction("ACCEPTED")}>
             <Check className="mr-2 size-4" />
-            Accept
+            {isPending ? "Accepting..." : "Accept"}
           </Button>
 
           <Button
             size="sm"
             variant="outline"
-            onClick={() => handleAction("decline")}
+            onClick={() => handleAction("DECLINED")}
             className="border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
           >
             <X className="mr-2 size-4" />
-            Decline
+            {isPending ? "Declining..." : "Decline"}
           </Button>
         </div>
       )
 
     case "PAID":
       return (
-        <Button size="sm" onClick={() => handleAction("start-job")}>
+        <Button size="sm" onClick={() => handleAction("IN_PROGRESS")}>
           <CirclePlay className="mr-2 size-4" />
-          Start Job
+          {isPending ? "Starting..." : "Start Job"}
         </Button>
       )
 
     case "IN_PROGRESS":
       return (
-        <Button size="sm" onClick={() => handleAction("complete-job")}>
+        <Button size="sm" onClick={() => handleAction("COMPLETED")}>
           <CircleCheck className="mr-2 size-4" />
-          Complete Job
+          {isPending ? "Completing..." : "Complete Job"}
         </Button>
       )
 

@@ -4,15 +4,6 @@ import { cookies } from "next/headers"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { BookingStatus } from "@/lib/type"
 
-// backend expects lowercase — adjust here if that changes
-// const STATUS_PAYLOAD: Record<string, string> = {
-//   ACCEPTED: "accepted",
-//   DECLINED: "declined",
-//   COMPLETED: "completed",
-//   IN_PROGRESS: "in_progress",
-//   CANCELLED: "cancelled",
-// }
-
 export async function updateBookingStatus(
   bookingId: string,
   status: BookingStatus
